@@ -1,10 +1,24 @@
 import React from "react";
-import { Home } from "./pages/Home";
+import { Orders } from "./pages/Orders";
+import styled from "styled-components";
+
+const RootWrapper = styled.div`
+  font-family: Inter;
+  p {
+    font-size: 14px;
+  }
+`;
+
+const AppWrapper = styled.div`
+  padding: 16px;
+`;
 function App() {
   return (
-    <div className="root">
-      <Home />
-    </div>
+    <RootWrapper className="root">
+      <AppWrapper>
+        <Orders />
+      </AppWrapper>
+    </RootWrapper>
   );
 }
 
