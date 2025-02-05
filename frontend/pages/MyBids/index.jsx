@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Tabs from "../../components/Tabs";
 import BidCardComponent from "../../components/BidCards/BidCardComponent";
 import { ORDERS_DATA } from "./constant";
 import Pagination from "../../components/Pagination";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
-import { getCompany } from "../../Utilities/company.util";
+// import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div``;
 const TabsContainer = styled.div``;
@@ -35,6 +36,7 @@ let tabsData = [
 ];
 
 export default function MyBids() {
+  const { application_id, company_id } = useParams();
   const [tablePageNumber, setTablePageNumber] = useState(1);
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
   const handleTabClick = (selectedTab) => {
@@ -53,7 +55,7 @@ export default function MyBids() {
           {
             key: "home",
             label: "Home",
-            link: `/company/${getCompany()}/`,
+            link: `/company/${company_id}/`,
           },
           {
             key: "mybids",

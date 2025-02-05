@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./components/Button";
-import { getCompany } from "./Utilities/company.util";
+// import { getCompany } from "./Utilities/company.util";
 import BreadCrumb from "./components/BreadCrumb/BreadCrumb";
 
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
-  margin: 22px;
+  /* margin: 22px; */
 
   p {
     margin: 0;
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 const Card = styled.div`
   background: #ffffff;
   border: 1px solid #e0e0e0;
-  border-radius: 1.2rem;
+  border-radius: 8px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -48,6 +48,9 @@ const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+const ButtonComponent = styled(Button)`
+  border-radius: 12px;
+`;
 
 const CustomCards = (props) => {
   const { item, onClick } = props;
@@ -60,9 +63,9 @@ const CustomCards = (props) => {
           <Desc>{desc}</Desc>
         </CardBody>
         <CardFooter>
-          <Button size="small" onClick={onClick}>
+          <ButtonComponent size="small" onClick={onClick}>
             {buttonText}
-          </Button>
+          </ButtonComponent>
         </CardFooter>
       </Card>
     </>
@@ -70,6 +73,7 @@ const CustomCards = (props) => {
 };
 
 function App() {
+  const { application_id, company_id } = useParams();
   const navigate = useNavigate();
   const [actionCards, setActionCards] = useState([
     {
@@ -96,10 +100,16 @@ function App() {
       route: "profile",
       buttonText: "Next",
     },
+    {
+      title: "Products",
+      desc: "List Products",
+      route: "products",
+      buttonText: "Next",
+    },
   ]);
 
   const handleClick = (route) => {
-    navigate(`/company/${getCompany()}/${route}`);
+    navigate(`/company/${company_id}/${route}`);
   };
 
   return (

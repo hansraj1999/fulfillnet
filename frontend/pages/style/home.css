@@ -1,4 +1,4 @@
-html {
+/* html {
   height: 100%;
   width: 100%;
   font-size: 8px;
@@ -13,7 +13,7 @@ body {
   @media @mobile {
     -webkit-tap-highlight-color: transparent;
   }
-}
+} */
 
 .products-container {
   font-family: Inter;

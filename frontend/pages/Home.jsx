@@ -7,6 +7,7 @@ import DEFAULT_NO_IMAGE from "../public/assets/default_icon_listing.png";
 import loaderGif from "../public/assets/loader.gif";
 import axios from "axios";
 import urlJoin from "url-join";
+import MainService from "../services/main-service";
 
 const EXAMPLE_MAIN_URL = window.location.origin;
 
@@ -27,14 +28,8 @@ export const Home = () => {
   const fetchProducts = async () => {
     setPageLoading(true);
     try {
-      const { data } = await axios.get(
-        urlJoin(EXAMPLE_MAIN_URL, "/api/products"),
-        {
-          headers: {
-            "x-company-id": company_id,
-          },
-        }
-      );
+      const { data } = await MainService.getAllProducts();
+
       setProductList(data.items);
     } catch (e) {
       console.error("Error fetching products:", e);

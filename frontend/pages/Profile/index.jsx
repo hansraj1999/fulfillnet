@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import GetInput from "../../components/TextInput/GetInput";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
-import { getCompany } from "../../Utilities/company.util";
+// import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div`
   .divider {
@@ -20,6 +21,7 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 const Header = styled.div`
+  font-size: 16px;
   font-weight: bold;
 `;
 
@@ -187,6 +189,7 @@ const getInitialFormValues = (formData) => {
 
 export default function Profile() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { application_id, company_id } = useParams();
   const {
     register,
     formState: { errors },
@@ -214,7 +217,7 @@ export default function Profile() {
           {
             key: "home",
             label: "Home",
-            link: `/company/${getCompany()}/`,
+            link: `/company/${company_id}/`,
           },
           {
             key: "profile",

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import loaderGif from "../../public/assets/loader.gif";
 import { BidCard } from "../../components/BidCards/BidCard";
 
 import { ORDERS_DATA } from "./constant";
 import styled from "styled-components";
 import Tabs from "../../components/Tabs";
-import { getCompany } from "../../Utilities/company.util";
+// import { getCompany } from "../../Utilities/company.util";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 
 const DetailsComponent = styled.div`
@@ -20,6 +21,7 @@ const DetailsComponent = styled.div`
 `;
 
 const Header = styled.div`
+  font-size: 16px;
   font-weight: bold;
 `;
 
@@ -62,6 +64,7 @@ let tabsData = [
 ];
 
 export default function BidDetails() {
+  const { application_id, company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
   const handleTabClick = (selectedTab) => {
     let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
@@ -70,7 +73,7 @@ export default function BidDetails() {
 
   const handleOrderClick = (orderData) => {
     // console.log(`/company/${getCompany()}/order/`);
-    // navigate(`/company/${getCompany()}/order/`);
+    // navigate(`/company/${company_id}/order/`);
   };
 
   return (
@@ -80,12 +83,12 @@ export default function BidDetails() {
           {
             key: "home",
             label: "Home",
-            link: `/company/${getCompany()}/`,
+            link: `/company/${company_id}/`,
           },
           {
             key: "broadcasted-bids",
             label: "Broadcasted Bids",
-            link: `/company/${getCompany()}/broadcasted-bids`,
+            link: `/company/${company_id}/broadcasted-bids`,
           },
           {
             key: "broadcasted-bids-details",

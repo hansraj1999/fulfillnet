@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Tabs from "../../components/Tabs";
 import BidCardComponent from "../../components/BidCards/BidCardComponent";
 import { ORDERS_DATA } from "./constant";
 import Pagination from "../../components/Pagination";
-import { getCompany } from "../../Utilities/company.util";
+// import { getCompany } from "../../Utilities/company.util";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 
 const Wrapper = styled.div``;
@@ -36,6 +36,7 @@ let tabsData = [
 ];
 
 export default function BroadCastedBids() {
+  const { application_id, company_id } = useParams();
   const navigate = useNavigate();
   const [tablePageNumber, setTablePageNumber] = useState(1);
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
@@ -45,7 +46,7 @@ export default function BroadCastedBids() {
   };
 
   const handleBidClick = (data) => {
-    navigate(`/company/${getCompany()}/broadcasted-bids/${data._id}/details`);
+    navigate(`/company/${company_id}/broadcasted-bids/${data._id}/details`);
   };
 
   return (
@@ -55,7 +56,7 @@ export default function BroadCastedBids() {
           {
             key: "home",
             label: "Home",
-            link: `/company/${getCompany()}/`,
+            link: `/company/${company_id}/`,
           },
           {
             key: "broadcasted-bids",

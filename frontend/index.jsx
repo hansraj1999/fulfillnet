@@ -12,7 +12,8 @@ const RootWrapper = styled.div`
 
   padding: 16px;
   background-color: white;
-  height: 100vh;
+  /* height: 100vh; */
+  margin: 12px;
 
   input:focus {
     outline: none; /* Removes the default outline */
