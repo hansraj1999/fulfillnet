@@ -9,6 +9,7 @@ import BidDetails from "./pages/BroadCastedBids/BidDetails";
 import Profile from "./pages/Profile";
 import Ledgers from "./pages/Ledgers";
 import { Home } from "./pages/Home";
+import BidOrder from "./components/BidOrder";
 // import Orders from "./pages/Orders/index";
 // import OrderDetail from "./pages/Orders/OrderDetails";
 
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
   {
     path: "/company/:company_id/",
     element: <App />,
+    loader: routeGuard,
+  },
+  {
+    path: "/shipment",
+    element: <BidOrder />,
     loader: routeGuard,
   },
   // {
