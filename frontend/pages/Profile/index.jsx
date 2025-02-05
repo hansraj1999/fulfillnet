@@ -237,9 +237,9 @@ export default function Profile() {
         ifsc: formData?.ifsc,
         vpa: formData?.vpa,
       };
-      debugger;
+
       await MainService.addBankDetails(payload);
-      // debugger;
+
       setModalOpen(false);
       reset();
     } catch (err) {

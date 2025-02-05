@@ -110,6 +110,74 @@ router.get("/:company_id/list", async (req, res, next) => {
   }
 });
 
+router.get("/:company_id/list", async (req, res, next) => {
+  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  try {
+    const { fdkSession, body } = req;
+    const { company_id } = fdkSession;
+
+    const URL = `${BASE_URL}/${company_id}/bids`;
+    const result = await axios.get(URL, {
+      params: {
+        limit: pageSize,
+        page: pageNo,
+        ...(filter_type && { filter_type: filter_type }),
+      },
+    });
+    const { data } = result;
+    console.log(result);
+
+    return res.send({
+      success: data?.success,
+      item_total: data?.total,
+      pageNo: data?.page,
+      pageSize: data?.limit,
+      data: data?.bids,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/:bid_id/apply", async (req, res, next) => {
+  try {
+    const { fdkSession, body, params } = req;
+    const { bid_id } = params;
+    const { company_id } = fdkSession;
+
+    const URL = `${BASE_URL}/${company_id}/bid/${bid_id}`;
+    const result = await axios.post(URL, body);
+    const { data } = result;
+    console.log(result);
+
+    return res.send({
+      success: true,
+      message: data,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/:bid_id/applied/list", async (req, res, next) => {
+  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  try {
+    const { params } = req;
+    const { bid_id } = params;
+
+    const URL = `${BASE_URL}/bids/${bid_id}/applied_bids`;
+    const result = await axios.get(URL);
+    const { data } = result;
+
+    return res.send({
+      success:true,
+      data: data,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use((err, req, res, next) => {
   //   logger.error("error in cart router", err);
 

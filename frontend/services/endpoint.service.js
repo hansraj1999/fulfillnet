@@ -25,6 +25,10 @@ const Endpoints = {
   GET_ALL_BIDS_BIDS() {
     return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/global/list`);
   },
+  GET_ALL_APPLIED_BIDS(params) {
+    const { bid_id } = params;
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${bid_id}/applied/list`);
+  },
 };
 
 export default Endpoints;

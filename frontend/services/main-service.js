@@ -35,6 +35,14 @@ const MainService = {
       params: { ...rest },
     });
   },
+  applyBid(params = {}) {
+    const { company_id, bid_id, ...rest } = params;
+    return axios.post(URLS.APPLY_BID({ company_id, bid_id }), { ...rest });
+  },
+  getAllAppliedBids(params = {}) {
+    const { bid_id } = params;
+    return axios.get(URLS.GET_ALL_APPLIED_BIDS({ bid_id }));
+  },
 };
 
 export default MainService;
