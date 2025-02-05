@@ -29,6 +29,7 @@ const LeftWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 12px;
+  align-items: center;
 `;
 const RightWrapper = styled.div`
   display: flex;
@@ -67,45 +68,47 @@ const order_data = {
 };
 
 export default function BidCardComponent(props = {}) {
-  const { onClick, orderData: order_data } = props;
+  const { onClick, data } = props;
   return (
     <>
       <ListComponent className="list-component">
         <ListWrapper>
           <LeftWrapper>
             <ImageComponent>
-              <img src={order_data.image} />
+              <img src={data.item_image} />
             </ImageComponent>
             <BlockComponent>
               <p>
-                <span>Shipment ID:</span> {order_data?.shipment_id}
+                <span>Shipment ID:</span> {data?.shipment_id}
               </p>
               <p>
                 <span>Shipment Date:</span>{" "}
-                {isoDateConverter(order_data?.shipment_created_at)}
+                {isoDateConverter(data?.created_at)}
               </p>
             </BlockComponent>
             <BlockComponent>
               <p>
-                <span>Price:</span> {order_data?.price}
+                <span>Bid Price:</span> {data?.initial_bid_price}
               </p>
               <p>
-                <span>Bid Offer Price:</span> {order_data?.price}
+                <span>Quantity:</span> {data?.quantity}
               </p>
+              {/* <p>
+                <span>Bid Offer Price:</span> {data?.price}
+              </p> */}
             </BlockComponent>
             <BlockComponent>
               <p>
-                <span>Status:</span> {order_data?.status}
+                <span>Status:</span> {data?.status}
+              </p>
+              <p>
+                <span>Item ID:</span> {data?.item_id}
               </p>
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>
             <BlockComponent>
-              <Button
-                mode="text"
-                size="small"
-                onClick={() => onClick(order_data)}
-              >
+              <Button mode="text" size="small" onClick={() => onClick(data)}>
                 {"Details"}
               </Button>
             </BlockComponent>

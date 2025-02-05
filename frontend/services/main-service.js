@@ -23,6 +23,12 @@ const MainService = {
   profileDetails(body = {}) {
     return axios.get(URLS.PROFILE_DETAILS(), body);
   },
+  getAllBidsByCompany(params = {}) {
+    const { company_id, ...rest } = params;
+    return axios.get(URLS.GET_ALL_BIDS_BY_COMPANY({ company_id }), {
+      params: { ...rest },
+    });
+  },
 };
 
 export default MainService;

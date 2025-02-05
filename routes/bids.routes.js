@@ -49,6 +49,36 @@ router.post("/register/bid", async (req, res, next) => {
   }
 });
 
+router.get("/:company_id/list", async (req, res, next) => {
+  const { pageNo = 1, pageSize = 10, filter_type = {} } = req.query;
+  try {
+    const { fdkSession, body } = req;
+    const { company_id } = fdkSession;
+    const { shipment_id, initial_bid_price } = body;
+
+    const URL = `${BASE_URL}/${company_id}/bids`;
+    const result = await axios.get(URL, {
+      params: {
+        limit: pageSize,
+        page: pageNo,
+        ...(filter_type && { filter_type: filter_type }),
+      },
+    });
+    const { data } = result;
+    console.log(result);
+
+    return res.send({
+      success: data?.success,
+      item_total: data?.total,
+      pageNo: data?.page,
+      pageSize: data?.limit,
+      data: data?.bids,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use((err, req, res, next) => {
   //   logger.error("error in cart router", err);
 

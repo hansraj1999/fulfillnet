@@ -18,6 +18,10 @@ const Endpoints = {
   PROFILE_DETAILS() {
     return urlJoin(EXAMPLE_MAIN_URL, "/api/company/profile-details");
   },
+  GET_ALL_BIDS_BY_COMPANY(params) {
+    const { company_id } = params;
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${company_id}/list`);
+  },
 };
 
 export default Endpoints;
