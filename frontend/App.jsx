@@ -84,9 +84,9 @@ function App() {
       buttonText: "Next",
     },
     {
-      title: "Ledger",
+      title: "Ledgers",
       desc: "List of transactions",
-      route: "ledger",
+      route: "ledgers",
       buttonText: "Next",
     },
     {
