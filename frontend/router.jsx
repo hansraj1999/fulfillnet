@@ -6,6 +6,7 @@ import { routeGuard } from "./guard";
 import MyBids from "./pages/MyBids/index";
 import BroadCastedBids from "./pages/BroadCastedBids";
 import BidDetails from "./pages/BroadCastedBids/BidDetails";
+import MyBidDetails from "./pages/MyBids/BidDetails";
 import Profile from "./pages/Profile";
 import Ledgers from "./pages/Ledgers";
 import { Home } from "./pages/Home";
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
   {
     path: "/company/:company_id/broadcasted-bids/:bid_id/details",
     element: <BidDetails />,
+    loader: routeGuard,
+  },
+  {
+    path: "/company/:company_id/my-bids/:bid_id/details",
+    element: <MyBidDetails />,
     loader: routeGuard,
   },
   {

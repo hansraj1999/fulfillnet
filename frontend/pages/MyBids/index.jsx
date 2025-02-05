@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Tabs from "../../components/Tabs";
 import BidCardComponent from "../../components/BidCards/BidCardComponent";
@@ -37,6 +37,7 @@ let tabsData = [
 ];
 
 export default function MyBids() {
+  const navigate = useNavigate();
   const { application_id, company_id } = useParams();
   const [tablePageNumber, setTablePageNumber] = useState(1);
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
@@ -76,7 +77,9 @@ export default function MyBids() {
   };
 
   const handleOrderClick = (data) => {
-    console.log(data);
+    navigate(`/company/${company_id}/my-bids/${data._id}/details`, {
+      state: { data },
+    });
   };
 
   return (
