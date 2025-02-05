@@ -61,7 +61,7 @@ export default function BidOrder(props = {}) {
   const onSubmit = (formData) => {
     console.log("formData >>>", formData);
     // debugger;
-    reset();
+    reset({ bid_amount: null });
   };
 
   return (
