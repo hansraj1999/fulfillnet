@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import loaderGif from "../../public/assets/loader.gif";
 import { BidCard } from "../../components/BidCards/BidCard";
@@ -8,6 +8,8 @@ import styled from "styled-components";
 import Tabs from "../../components/Tabs";
 // import { getCompany } from "../../Utilities/company.util";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
+import { AppliedBidCard } from "../../components/BidCards/AppliedBidCard";
+import MainService from "../../services/main-service";
 
 const DetailsComponent = styled.div`
   background-color: white;
@@ -65,6 +67,7 @@ let tabsData = [
 
 export default function BidDetails() {
   const location = useLocation();
+  const [appliedBids, setAppliedBids] = useState([]);
   const { application_id, company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
   const bid_data = location.state?.data;
@@ -74,9 +77,34 @@ export default function BidDetails() {
     setActiveTab(newTab);
   };
 
-  const handleOrderClick = (orderData) => {
-    // console.log(`/company/${getCompany()}/order/`);
-    // navigate(`/company/${company_id}/order/`);
+  useEffect(() => {
+    listAppliedBids();
+  }, []);
+
+  const listAppliedBids = async () => {
+    try {
+      const result = await MainService.getAllAppliedBids({
+        bid_id: bid_data?.bid_id,
+      });
+      const { data } = result?.data;
+
+      setAppliedBids(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const bidApprovalHandler = async (bidData) => {
+    try {
+      const result = await MainService.approveBid({
+        bid_id: bidData?.bid_id,
+        winner_company_id: bidData?.company_id,
+      });
+
+      const data = result?.data;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -174,22 +202,25 @@ export default function BidDetails() {
             <ListingWrapper>
               <Header>Bid List</Header>
 
-              <TabsContainer>
+              {/* <TabsContainer>
                 <Tabs
                   selectedTab={activeTab}
                   tabList={tabsData}
                   onClick={handleTabClick}
                 />
-              </TabsContainer>
-              <BidListing>
-                {ORDERS_DATA.map((orderData, index) => (
-                  <BidCard
-                    key={index}
-                    onClick={handleOrderClick}
-                    orderData={orderData}
-                  />
-                ))}
-              </BidListing>
+              </TabsContainer> */}
+              {appliedBids?.length > 0 && (
+                <BidListing>
+                  {appliedBids?.map((data, index) => (
+                    <AppliedBidCard
+                      key={index}
+                      onClick={bidApprovalHandler}
+                      data={data}
+                      type="approval"
+                    />
+                  ))}
+                </BidListing>
+              )}
             </ListingWrapper>
           </DetailsComponent>
         </>

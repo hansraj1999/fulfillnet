@@ -316,7 +316,9 @@ export default function BidDetails() {
             <DetailWrapper>
               <Section>
                 <Label>Contact Person:</Label>
-                <Value>{bid_data?.delivery_details?.store_address_json?.name}</Value>
+                <Value>
+                  {bid_data?.delivery_details?.store_address_json?.name}
+                </Value>
               </Section>
               <Section>
                 <Label>Store Name:</Label>
@@ -362,15 +364,17 @@ export default function BidDetails() {
                   onClick={handleTabClick}
                 />
               </TabsContainer> */}
-              <BidListing>
-                {appliedBids.map((data, index) => (
-                  <AppliedBidCard
-                    key={index}
-                    onClick={handleOrderClick}
-                    data={data}
-                  />
-                ))}
-              </BidListing>
+              {appliedBids?.length > 0 && (
+                <BidListing>
+                  {appliedBids?.map((data, index) => (
+                    <AppliedBidCard
+                      key={index}
+                      onClick={handleOrderClick}
+                      data={data}
+                    />
+                  ))}
+                </BidListing>
+              )}
             </ListingWrapper>
           </DetailsComponent>
         </>
@@ -380,7 +384,7 @@ export default function BidDetails() {
         <ModalComponent>
           <ModalWrapper>
             <HeaderWrapper>
-              <ModelHeader>Add Bid</ModelHeader>
+              <ModelHeader>Apply for Bid</ModelHeader>
               <Button
                 mode={"text"}
                 onClick={() => {

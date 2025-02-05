@@ -50,6 +50,26 @@ router.post("/register/bid", async (req, res, next) => {
   }
 });
 
+router.post("/:bid_id/approve", async (req, res, next) => {
+  try {
+    const { fdkSession, params, body } = req;
+    const { bid_id } = params;
+    const { winner_company_id } = body;
+    const { company_id } = fdkSession;
+
+    const URL = `${BASE_URL}/${company_id}/bid/${bid_id}/winner?winner_company_id=${winner_company_id}`;
+    const result = await axios.post(URL);
+    const { data } = result;
+
+    return res.send({
+      success: true,
+      data: data,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // bid list for other channels
 router.get("/global/list", async (req, res, next) => {
   const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
@@ -82,7 +102,7 @@ router.get("/global/list", async (req, res, next) => {
 });
 
 router.get("/:company_id/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  const { pageNo = 1, pageSize = 10, filter_type = null } = req.query;
   try {
     const { fdkSession, body } = req;
     const { company_id } = fdkSession;
@@ -92,7 +112,7 @@ router.get("/:company_id/list", async (req, res, next) => {
       params: {
         limit: pageSize,
         page: pageNo,
-        ...(filter_type && { filter_type: filter_type }),
+        filter_type,
       },
     });
     const { data } = result;
@@ -111,7 +131,7 @@ router.get("/:company_id/list", async (req, res, next) => {
 });
 
 router.get("/:company_id/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  const { pageNo = 1, pageSize = 10, filter_type = null } = req.query;
   try {
     const { fdkSession, body } = req;
     const { company_id } = fdkSession;
@@ -152,7 +172,7 @@ router.post("/:bid_id/apply", async (req, res, next) => {
 
     return res.send({
       success: true,
-      message: data,
+      message: data?.message,
     });
   } catch (err) {
     next(err);
@@ -160,7 +180,7 @@ router.post("/:bid_id/apply", async (req, res, next) => {
 });
 
 router.get("/:bid_id/applied/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  const { pageNo = 1, pageSize = 10, filter_type = null } = req.query;
   try {
     const { params } = req;
     const { bid_id } = params;
@@ -170,7 +190,7 @@ router.get("/:bid_id/applied/list", async (req, res, next) => {
     const { data } = result;
 
     return res.send({
-      success:true,
+      success: true,
       data: data,
     });
   } catch (err) {

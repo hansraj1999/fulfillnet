@@ -1,6 +1,7 @@
 import { isoDateConverter } from "../../Utilities/date.util";
 import React from "react";
 import styled from "styled-components";
+import Button from "../Button";
 
 const ListComponent = styled.div`
   background: rgb(255, 255, 255);
@@ -66,9 +67,17 @@ const Badge = styled.div`
 
   border-color: ${({ type }) => (type === "approved" ? "#00b26b" : "#ff0000")};
 `;
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+const ButtonComponent = styled(Button)`
+  font-size: 12px;
+  padding: 10px 14px;
+`;
 
 export const AppliedBidCard = (props = {}) => {
-  const { onClick, data } = props;
+  const { onClick, data, type = "listing" } = props;
   return (
     <>
       <ListComponent className="bid-card-component">
@@ -87,23 +96,31 @@ export const AppliedBidCard = (props = {}) => {
             </BlockComponent>
             <BlockComponent>
               <p>
-                <span>Status:</span> {data?.status}
+                <span>Bid Price:</span> {data?.amount}
               </p>
               <p>
-                <span>Date:</span> {data?.status}
-              </p>
-            </BlockComponent>
-            <BlockComponent>
-              <p>
-                <span>Status:</span> {data?.status}
-              </p>
-              <p>
-                <span>Company Name:</span> {isoDateConverter(data?.created_at)}
+                <span>Date:</span> {isoDateConverter(data?.created_at)}
               </p>
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>
-            <Badge type="approved">{data.amount}</Badge>
+            {type === "approval" && (
+              <>
+                {data?.is_winner ? (
+                  <Badge type="approved">Approved</Badge>
+                ) : (
+                  <ButtonWrapper>
+                    <ButtonComponent
+                      size="small"
+                      mode="primary"
+                      onClick={() => onClick(data)}
+                    >
+                      {"Approve"}
+                    </ButtonComponent>
+                  </ButtonWrapper>
+                )}
+              </>
+            )}
           </RightWrapper>
         </ListWrapper>
       </ListComponent>
