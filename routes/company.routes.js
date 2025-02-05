@@ -24,6 +24,49 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+router.post("/add-account-details", async (req, res, next) => {
+  try {
+    const { fdkSession, body } = req;
+    const { company_id } = fdkSession;
+
+    console.log("payload >>>>>", body);
+    const URL = `${BASE_URL}/register/${company_id}/banking`;
+    const { data } = await axios.post(URL, body);
+
+    if (data) {
+      return res.send({
+        success: true,
+        message: "Account details saved successfully",
+      });
+    } else {
+      throw new Error("Interval Server Error");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/profile-details", async (req, res, next) => {
+  try {
+    const { fdkSession } = req;
+    const { company_id } = fdkSession;
+
+    const URL = `${BASE_URL}/${company_id}/details`;
+    const { data } = await axios.get(URL);
+
+    if (data) {
+      return res.send({
+        success: true,
+        data: data,
+      });
+    } else {
+      throw new Error("Interval Server Error");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use((err, req, res, next) => {
   //   logger.error("error in cart router", err);
 

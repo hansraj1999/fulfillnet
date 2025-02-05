@@ -28,6 +28,7 @@ router.post("/register/bid", async (req, res, next) => {
       item_id: String(bag?.item?.id),
       brand_id: bag?.brand?.brand_name,
       fynd_order_id: shipment?.order?.fynd_order_id,
+      article: bag?.article,
       article_id: bag?.article?.uid,
       shipment_id: shipment_id,
       // external_order_id: "string",

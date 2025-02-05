@@ -17,6 +17,12 @@ const MainService = {
   registerNewBid(body = {}) {
     return axios.post(URLS.REGISTER_NEW_BID(), body);
   },
+  addBankDetails(body = {}) {
+    return axios.post(URLS.ADD_BANK_DETAILS(), body);
+  },
+  profileDetails(body = {}) {
+    return axios.get(URLS.PROFILE_DETAILS(), body);
+  },
 };
 
 export default MainService;

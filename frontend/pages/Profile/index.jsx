@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import GetInput from "../../components/TextInput/GetInput";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
+import MainService from "../../services/main-service";
 // import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div`
@@ -84,6 +85,18 @@ const FormComponent = styled.form`
 
 const FORM_DATA = [
   {
+    key: "beneficiary_name",
+    label: "Beneficiary Name",
+    name: "beneficiary_name",
+    default: "",
+    type: "text",
+    inputStyle: "contained",
+    placeholder: "Enter Name",
+    validation: {
+      required: "Beneficiary Name is required.",
+    },
+  },
+  {
     key: "account_number",
     label: "Account Number",
     name: "account_number",
@@ -105,9 +118,9 @@ const FORM_DATA = [
     },
   },
   {
-    key: "ifsc_code",
+    key: "ifsc",
     label: "IFSC Code",
-    name: "ifsc_code",
+    name: "ifsc",
     default: "",
     type: "text",
     inputStyle: "contained",
@@ -121,27 +134,27 @@ const FORM_DATA = [
     },
   },
   {
-    key: "beneficiary_name",
-    label: "Beneficiary Name",
-    name: "beneficiary_name",
+    key: "bank_name",
+    label: "Bank Name",
+    name: "bank_name",
     default: "",
     type: "text",
     inputStyle: "contained",
     placeholder: "Enter Name",
     validation: {
-      required: "Beneficiary Name is required.",
+      required: "Bank Name is required.",
     },
   },
   {
-    key: "upi_id",
-    label: "UPI ID",
-    name: "upi_id",
+    key: "vpa",
+    label: "VPA",
+    name: "vpa",
     default: "",
     type: "text",
     inputStyle: "contained",
-    placeholder: "Enter Name",
+    placeholder: "Enter VPA",
     validation: {
-      // required: "Beneficiary Name is required.",
+      required: "VPA is required.",
     },
   },
   {
@@ -158,14 +171,6 @@ const FORM_DATA = [
       {
         key: "SAVING",
         value: "SAVING",
-      },
-      {
-        key: "NODAL",
-        value: "NODAL",
-      },
-      {
-        key: "ESCROW",
-        value: "ESCROW",
       },
     ],
     placeholder: "Enter Type",
@@ -188,6 +193,7 @@ const getInitialFormValues = (formData) => {
 };
 
 export default function Profile() {
+  const [profileDetails, setProfileDetails] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const { application_id, company_id } = useParams();
   const {
@@ -203,11 +209,42 @@ export default function Profile() {
   });
   const allValues = watch();
 
-  const onSubmit = (formData) => {
-    console.log("formData >>>", formData);
-    // debugger;
-    setModalOpen(false);
-    reset();
+  useEffect(() => {
+    if (!profileDetails) {
+      getProfileDetails();
+    }
+  }, [profileDetails]);
+
+  const getProfileDetails = async () => {
+    try {
+      const result = await MainService.profileDetails();
+      const { data: profile_details } = result?.data;
+      console.log(result?.data);
+      setProfileDetails(profile_details);
+    } catch (err) {
+      console.log(err);
+      setProfileDetails(null);
+    }
+  };
+
+  const onSubmit = async (formData) => {
+    try {
+      const payload = {
+        beneficiary_name: formData?.beneficiary_name,
+        account_number: formData?.account_number,
+        account_type: formData?.account_type,
+        bank_name: formData?.bank_name,
+        ifsc: formData?.ifsc,
+        vpa: formData?.vpa,
+      };
+      debugger;
+      await MainService.addBankDetails(payload);
+      // debugger;
+      setModalOpen(false);
+      reset();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -233,12 +270,16 @@ export default function Profile() {
           </HeaderWrapper>
           <DetailWrapper>
             <Section>
-              <Label>Company ID:</Label>
-              <Value>1</Value>
+              <Label>Company Name:</Label>
+              <Value>{profileDetails?.name}</Value>
             </Section>
             <Section>
-              <Label>Company Name:</Label>
-              <Value>TEST123456</Value>
+              <Label>Company ID:</Label>
+              <Value>{profileDetails?.company_id}</Value>
+            </Section>
+            <Section>
+              <Label>Mobile Number:</Label>
+              <Value>{profileDetails?.mobile_number}</Value>
             </Section>
           </DetailWrapper>
         </DetailsWrapper>
@@ -248,26 +289,36 @@ export default function Profile() {
         <DetailsWrapper>
           <HeaderWrapper>
             <Header>Account Details</Header>
-            <ButtonComponent onClick={() => setModalOpen(true)}>
-              Add Account
-            </ButtonComponent>
+            {!profileDetails?.account_number && (
+              <ButtonComponent onClick={() => setModalOpen(true)}>
+                Add Account
+              </ButtonComponent>
+            )}
           </HeaderWrapper>
           <DetailWrapper>
             <Section>
-              <Label>Accound ID:</Label>
-              <Value>82828282828282</Value>
+              <Label>Accound Number:</Label>
+              <Value>{profileDetails?.account_number}</Value>
+            </Section>
+            <Section>
+              <Label>Beneficiary Name:</Label>
+              <Value>{profileDetails?.beneficiary_name}</Value>
             </Section>
             <Section>
               <Label>IFSC Code:</Label>
-              <Value>TEST123456</Value>
+              <Value>{profileDetails?.ifsc}</Value>
+            </Section>
+            <Section>
+              <Label>Bank Name:</Label>
+              <Value>{profileDetails?.bank_name}</Value>
             </Section>
             <Section>
               <Label>Accoun Type:</Label>
-              <Value>Savings</Value>
+              <Value>{profileDetails?.account_type}</Value>
             </Section>
             <Section>
-              <Label>UPI ID:</Label>
-              <Value>Savings</Value>
+              <Label>VPA ID:</Label>
+              <Value>{profileDetails?.vpa}</Value>
             </Section>
           </DetailWrapper>
         </DetailsWrapper>
