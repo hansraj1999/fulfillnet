@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./components/Button";
 // import { getCompany } from "./Utilities/company.util";
 import BreadCrumb from "./components/BreadCrumb/BreadCrumb";
+import MainService from "./services/main-service";
+// import BidOrder from "./components/BidOrder";
+
+const HeaderComponent = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const Wrapper = styled.div`
   display: grid;
@@ -53,7 +63,7 @@ const ButtonComponent = styled(Button)`
 `;
 
 const CustomCards = (props) => {
-  const { item, onClick } = props;
+  const { item, onClick, disabled } = props;
   const { title, desc, buttonText } = item || {};
   return (
     <>
@@ -63,7 +73,7 @@ const CustomCards = (props) => {
           <Desc>{desc}</Desc>
         </CardBody>
         <CardFooter>
-          <ButtonComponent size="small" onClick={onClick}>
+          <ButtonComponent disabled={disabled} size="small" onClick={onClick}>
             {buttonText}
           </ButtonComponent>
         </CardFooter>
@@ -73,8 +83,9 @@ const CustomCards = (props) => {
 };
 
 function App() {
-  const { application_id, company_id } = useParams();
+  const { company_id } = useParams();
   const navigate = useNavigate();
+  const [isRegistered, setRegistered] = useState(false);
   const [actionCards, setActionCards] = useState([
     {
       title: "My Bids",
@@ -108,21 +119,43 @@ function App() {
     },
   ]);
 
+  const handleCompanyRegisteration = async () => {
+    const result = await MainService.registerCompany({
+      company_id,
+    });
+    const data = result?.data;
+    toast(data?.message, {
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+    });
+
+    setRegistered(true);
+  };
+
+  useEffect(() => {
+    if (!isRegistered) {
+      handleCompanyRegisteration();
+    }
+  });
+
   const handleClick = (route) => {
     navigate(`/company/${company_id}/${route}`);
   };
 
   return (
     <>
-      <BreadCrumb
-        breadCrumbList={[
-          {
-            key: "home",
-            label: "Home",
-            // link: "current",
-          },
-        ]}
-      />
+      <HeaderComponent>
+        <BreadCrumb
+          breadCrumbList={[
+            {
+              key: "home",
+              label: "Home",
+              // link: "current",
+            },
+          ]}
+        />
+      </HeaderComponent>
       <Wrapper>
         {actionCards?.map((item, idx) => {
           return (
@@ -130,10 +163,14 @@ function App() {
               key={idx}
               item={item}
               onClick={() => handleClick(item.route)}
+              disabled={!isRegistered}
             />
           );
         })}
       </Wrapper>
+
+      <ToastContainer />
+      {/* <BidOrder /> */}
     </>
   );
 }

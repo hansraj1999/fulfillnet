@@ -11,6 +11,9 @@ const MainService = {
   getAllProducts(params = {}) {
     return axios.get(URLS.GET_ALL_PRODUCTS(), { params });
   },
+  registerCompany(body = {}) {
+    return axios.post(URLS.REGISTER_COMPANY(), body);
+  },
 };
 
 export default MainService;
