@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import GetInput from "../TextInput/GetInput";
@@ -45,6 +46,10 @@ const getInitialFormValues = (formData) => {
 };
 
 export default function BidOrder(props = {}) {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const shipmentId = queryParams.get("shipment_id");
+
   const {
     register,
     formState: { errors },
@@ -59,7 +64,7 @@ export default function BidOrder(props = {}) {
   const allValues = watch();
 
   const onSubmit = (formData) => {
-    console.log("formData >>>", formData);
+    console.log("formData >>>", formData, shipmentId);
     // debugger;
     reset({ bid_amount: null });
   };
