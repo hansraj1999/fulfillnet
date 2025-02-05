@@ -12,13 +12,13 @@ const {
 const sqliteInstance = new sqlite3.Database("session_storage.db");
 const productRouter = express.Router();
 const companyRoutes = require("./routes/company.routes");
+const bidsRoutes = require("./routes/bids.routes");
 
 const fdkExtension = setupFdk({
   api_key: process.env.EXTENSION_API_KEY,
   api_secret: process.env.EXTENSION_API_SECRET,
   base_url: process.env.EXTENSION_BASE_URL,
   cluster: process.env.FP_API_DOMAIN,
-  debug: true,
   callbacks: {
     auth: async (req) => {
       // Write you code here to return initial launch url after auth process complete
@@ -118,6 +118,7 @@ productRouter.get(
 // FDK extension api route which has auth middleware and FDK client instance attached to it.
 platformApiRoutes.use("/products", productRouter);
 platformApiRoutes.use("/company", companyRoutes);
+platformApiRoutes.use("/bids", bidsRoutes);
 
 // If you are adding routes outside of the /api path,
 // remember to also add a proxy rule for them in /frontend/vite.config.js

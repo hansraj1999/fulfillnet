@@ -9,6 +9,9 @@ const Endpoints = {
   REGISTER_COMPANY() {
     return urlJoin(EXAMPLE_MAIN_URL, "/api/company/register");
   },
+  REGISTER_NEW_BID() {
+    return urlJoin(EXAMPLE_MAIN_URL, "/api/bids/register/bid");
+  },
 };
 
 export default Endpoints;

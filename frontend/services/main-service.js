@@ -14,6 +14,9 @@ const MainService = {
   registerCompany(body = {}) {
     return axios.post(URLS.REGISTER_COMPANY(), body);
   },
+  registerNewBid(body = {}) {
+    return axios.post(URLS.REGISTER_NEW_BID(), body);
+  },
 };
 
 export default MainService;
