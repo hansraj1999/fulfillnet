@@ -5,7 +5,8 @@ import Tabs from "../../components/Tabs";
 import LedgerCard from "../../components/BidCards/LedgerCard";
 import { ORDERS_DATA } from "./constant";
 import Pagination from "../../components/Pagination";
-// import { getCompany } from "../../Utilities/company.util";
+import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
+import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div``;
 const TabsContainer = styled.div``;
@@ -39,6 +40,20 @@ export default function Ledgers() {
 
   return (
     <>
+      <BreadCrumb
+        breadCrumbList={[
+          {
+            key: "home",
+            label: "Home",
+            link: `/company/${getCompany()}/`,
+          },
+          {
+            key: "ledgers",
+            label: "Ledgers",
+            link: "current",
+          },
+        ]}
+      />
       <Wrapper>
         <TabsContainer>
           <Tabs

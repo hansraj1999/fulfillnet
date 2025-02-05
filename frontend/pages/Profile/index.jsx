@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import GetInput from "../../components/TextInput/GetInput";
+import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
+import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div`
   .divider {
@@ -184,7 +186,7 @@ const getInitialFormValues = (formData) => {
 };
 
 export default function Profile() {
-  const [isModalOpen, setModalOpen] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
   const {
     register,
     formState: { errors },
@@ -207,6 +209,20 @@ export default function Profile() {
 
   return (
     <>
+      <BreadCrumb
+        breadCrumbList={[
+          {
+            key: "home",
+            label: "Home",
+            link: `/company/${getCompany()}/`,
+          },
+          {
+            key: "profile",
+            label: "Profile",
+            link: "current",
+          },
+        ]}
+      />
       <Wrapper>
         <DetailsWrapper>
           <HeaderWrapper>

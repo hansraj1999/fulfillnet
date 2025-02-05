@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "./components/Button";
 import { getCompany } from "./Utilities/company.util";
+import BreadCrumb from "./components/BreadCrumb/BreadCrumb";
 
 const Wrapper = styled.div`
   display: grid;
@@ -103,6 +104,15 @@ function App() {
 
   return (
     <>
+      <BreadCrumb
+        breadCrumbList={[
+          {
+            key: "home",
+            label: "Home",
+            // link: "current",
+          },
+        ]}
+      />
       <Wrapper>
         {actionCards?.map((item, idx) => {
           return (

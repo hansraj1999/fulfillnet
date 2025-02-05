@@ -4,6 +4,8 @@ import Tabs from "../../components/Tabs";
 import BidCardComponent from "../../components/BidCards/BidCardComponent";
 import { ORDERS_DATA } from "./constant";
 import Pagination from "../../components/Pagination";
+import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
+import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div``;
 const TabsContainer = styled.div``;
@@ -46,6 +48,20 @@ export default function MyBids() {
 
   return (
     <>
+      <BreadCrumb
+        breadCrumbList={[
+          {
+            key: "home",
+            label: "Home",
+            link: `/company/${getCompany()}/`,
+          },
+          {
+            key: "mybids",
+            label: "My Bids",
+            link: "current",
+          },
+        ]}
+      />
       <Wrapper>
         <TabsContainer>
           <Tabs

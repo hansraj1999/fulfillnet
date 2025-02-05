@@ -6,6 +6,7 @@ import BidCardComponent from "../../components/BidCards/BidCardComponent";
 import { ORDERS_DATA } from "./constant";
 import Pagination from "../../components/Pagination";
 import { getCompany } from "../../Utilities/company.util";
+import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 
 const Wrapper = styled.div``;
 const TabsContainer = styled.div``;
@@ -49,6 +50,20 @@ export default function BroadCastedBids() {
 
   return (
     <>
+      <BreadCrumb
+        breadCrumbList={[
+          {
+            key: "home",
+            label: "Home",
+            link: `/company/${getCompany()}/`,
+          },
+          {
+            key: "broadcasted-bids",
+            label: "Broadcasted Bids",
+            link: "current",
+          },
+        ]}
+      />
       <Wrapper>
         <TabsContainer>
           <Tabs

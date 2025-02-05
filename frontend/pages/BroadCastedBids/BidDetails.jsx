@@ -5,6 +5,8 @@ import { BidCard } from "../../components/BidCards/BidCard";
 import { ORDERS_DATA } from "./constant";
 import styled from "styled-components";
 import Tabs from "../../components/Tabs";
+import { getCompany } from "../../Utilities/company.util";
+import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 
 const DetailsComponent = styled.div`
   background-color: white;
@@ -73,6 +75,25 @@ export default function BidDetails() {
 
   return (
     <>
+      <BreadCrumb
+        breadCrumbList={[
+          {
+            key: "home",
+            label: "Home",
+            link: `/company/${getCompany()}/`,
+          },
+          {
+            key: "broadcasted-bids",
+            label: "Broadcasted Bids",
+            link: `/company/${getCompany()}/broadcasted-bids`,
+          },
+          {
+            key: "broadcasted-bids-details",
+            label: "Detail",
+            link: "current",
+          },
+        ]}
+      />
       {false ? (
         <div className="loader" data-testid="loader">
           <img src={loaderGif} alt="loader GIF" />

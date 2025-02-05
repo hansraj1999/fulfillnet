@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import leftArrow from "../../public/assets/left_arrow.svg";
-import rightArrow from "../../public/assets/right_arrow.svg";
+import ArrowRight from "../../public/assets/right_arrow.svg";
 
 const PaginationComponent = styled.div`
   display: flex;
@@ -134,7 +134,7 @@ export default function Pagination(props = {}) {
           {tablePageNumber < Math.ceil(total / rowsPerPage) && (
             <PaginationArrow
               type="right"
-              src={rightArrow}
+              src={leftArrow}
               onClick={() => handlePaginationClick(tablePageNumber + 1)}
             />
           )}
