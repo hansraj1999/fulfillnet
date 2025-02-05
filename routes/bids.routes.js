@@ -34,6 +34,7 @@ router.post("/register/bid", async (req, res, next) => {
       // external_order_id: "string",
       // external_shipment_id: "string",
       delivery_details: shipment?.fulfilling_store,
+      item_details: bag?.item,
     };
     console.log("payload >>>>>", payload);
 
@@ -49,12 +50,42 @@ router.post("/register/bid", async (req, res, next) => {
   }
 });
 
-router.get("/:company_id/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = {} } = req.query;
+// bid list for other channels
+router.get("/global/list", async (req, res, next) => {
+  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
   try {
     const { fdkSession, body } = req;
     const { company_id } = fdkSession;
-    const { shipment_id, initial_bid_price } = body;
+
+    const URL = `${BASE_URL}/bids`;
+    const result = await axios.get(URL, {
+      params: {
+        limit: pageSize,
+        page: pageNo,
+        ...(filter_type && { filter_type: filter_type }),
+        exclude_company_id: company_id,
+      },
+    });
+    const { data } = result;
+    console.log(result);
+
+    return res.send({
+      success: data?.success,
+      item_total: data?.total,
+      pageNo: data?.page,
+      pageSize: data?.limit,
+      data: data?.bids,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/:company_id/list", async (req, res, next) => {
+  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  try {
+    const { fdkSession, body } = req;
+    const { company_id } = fdkSession;
 
     const URL = `${BASE_URL}/${company_id}/bids`;
     const result = await axios.get(URL, {

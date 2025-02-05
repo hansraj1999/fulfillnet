@@ -29,6 +29,12 @@ const MainService = {
       params: { ...rest },
     });
   },
+  getAllGlobalBids(params = {}) {
+    const { company_id, ...rest } = params;
+    return axios.get(URLS.GET_ALL_BIDS_BIDS(), {
+      params: { ...rest },
+    });
+  },
 };
 
 export default MainService;

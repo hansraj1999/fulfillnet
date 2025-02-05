@@ -82,8 +82,7 @@ export default function BidCardComponent(props = {}) {
                 <span>Shipment ID:</span> {data?.shipment_id}
               </p>
               <p>
-                <span>Shipment Date:</span>{" "}
-                {isoDateConverter(data?.created_at)}
+                <span>Shipment Date:</span> {isoDateConverter(data?.created_at)}
               </p>
             </BlockComponent>
             <BlockComponent>
@@ -102,7 +101,7 @@ export default function BidCardComponent(props = {}) {
                 <span>Status:</span> {data?.status}
               </p>
               <p>
-                <span>Item ID:</span> {data?.item_id}
+                <span>Company Name:</span> {data?.company_name}
               </p>
             </BlockComponent>
           </LeftWrapper>

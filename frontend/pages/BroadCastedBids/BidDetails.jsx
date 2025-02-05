@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import loaderGif from "../../public/assets/loader.gif";
 import { BidCard } from "../../components/BidCards/BidCard";
 
@@ -64,8 +64,11 @@ let tabsData = [
 ];
 
 export default function BidDetails() {
+  const location = useLocation();
   const { application_id, company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
+  const bid_data = location.state?.data;
+
   const handleTabClick = (selectedTab) => {
     let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
     setActiveTab(newTab);
@@ -107,24 +110,62 @@ export default function BidDetails() {
             <Header>Order Details</Header>
             <DetailWrapper>
               <Section>
+                <Label>Company ID:</Label>
+                <Value>{bid_data?.ordering_company_id}</Value>
+              </Section>
+              <Section>
+                <Label>Company Name:</Label>
+                <Value>{bid_data?.company_name}</Value>
+              </Section>
+              <Section>
                 <Label>Shipment ID:</Label>
-                <Value>313123</Value>
+                <Value>{bid_data?.shipment_id}</Value>
               </Section>
               <Section>
-                <Label>Shipment Date:</Label>
-                <Value>313123</Value>
+                <Label>Created Date:</Label>
+                <Value>{bid_data?.created_at}</Value>
               </Section>
               <Section>
-                <Label>Price:</Label>
-                <Value>313123</Value>
+                <Label>Bid Price:</Label>
+                <Value>{bid_data?.initial_bid_price}</Value>
               </Section>
               <Section>
-                <Label>Payment Mode:</Label>
-                <Value>COD</Value>
+                <Label>Quantity:</Label>
+                <Value>{bid_data?.quantity}</Value>
               </Section>
               <Section>
                 <Label>Status:</Label>
-                <Value>COD</Value>
+                <Value>{bid_data?.status}</Value>
+              </Section>
+            </DetailWrapper>
+
+            <div className="divider"></div>
+
+            <Header>Article Details</Header>
+            <DetailWrapper>
+              <Section>
+                <Label>Name:</Label>
+                <Value>{bid_data?.item_details?.name}</Value>
+              </Section>
+              <Section>
+                <Label>Size:</Label>
+                <Value>{bid_data?.item_details?.size}</Value>
+              </Section>
+              <Section>
+                <Label>Created Date:</Label>
+                <Value>{bid_data?.created_at}</Value>
+              </Section>
+              <Section>
+                <Label>Bid Price:</Label>
+                <Value>{bid_data?.initial_bid_price}</Value>
+              </Section>
+              <Section>
+                <Label>Quantity:</Label>
+                <Value>{bid_data?.quantity}</Value>
+              </Section>
+              <Section>
+                <Label>Status:</Label>
+                <Value>{bid_data?.status}</Value>
               </Section>
             </DetailWrapper>
 
