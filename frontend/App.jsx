@@ -124,11 +124,14 @@ function App() {
       company_id,
     });
     const data = result?.data;
-    toast(data?.message, {
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-    });
+
+    if (data?.success) {
+      toast(data?.message, {
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+      });
+    }
 
     setRegistered(true);
   };
