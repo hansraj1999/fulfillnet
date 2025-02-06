@@ -240,6 +240,7 @@ export default function BidDetails() {
                 <div className="divider"></div>
                 <OrderTrackingComponent
                   tracking_list={shipmentData?.tracking_list}
+                  onRefreshClick={getOrderDetails}
                 />
               </>
             )}

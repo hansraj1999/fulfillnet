@@ -1,5 +1,20 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "./Button";
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`;
+
+const Header = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+`;
 
 // Styled Components
 const TrackingContainer = styled.div`
@@ -20,7 +35,6 @@ const StepDetail = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  
 `;
 
 const Step = styled.div`
@@ -57,6 +71,12 @@ const Line = styled.div`
   transition: background-color 0.3s ease-in-out;
 `;
 
+const ButtonComponent = styled(Button)`
+  padding: 14px;
+  font-size: 12px;
+  height: 12px;
+`;
+
 const TrackingSteps = ({ trackingList }) => {
   return (
     <TrackingContainer>
@@ -80,12 +100,18 @@ const TrackingSteps = ({ trackingList }) => {
 // Example Usage
 
 export default function OrderTrackingComponent(props = {}) {
-  const { tracking_list: trackingList } = props;
+  const { tracking_list: trackingList, onRefreshClick } = props;
   return (
     <div style={{ padding: "20px" }}>
-      <h3 style={{ textAlign: "center", marginBottom: "20px" }}>
-        Order Tracking
-      </h3>
+      <HeaderWrapper>
+        <div></div>
+        <Header style={{ textAlign: "center", marginBottom: "20px" }}>
+          Order Tracking
+        </Header>
+        <ButtonComponent size="sm" onClick={onRefreshClick}>
+          Refresh
+        </ButtonComponent>
+      </HeaderWrapper>
       <TrackingSteps trackingList={trackingList} />
     </div>
   );
