@@ -85,9 +85,9 @@ export const AppliedBidCard = (props = {}) => {
       <ListComponent className="bid-card-component" active={active}>
         <ListWrapper>
           <LeftWrapper>
-            <ImageComponent>
+            {/* <ImageComponent>
               <img src={data.item_image} />
-            </ImageComponent>
+            </ImageComponent> */}
             <BlockComponent>
               <p>
                 <span>Company Name:</span> {data?.company_name}

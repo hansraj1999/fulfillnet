@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import GetInput from "../../components/TextInput/GetInput";
 import MainService from "../../services/main-service";
 import OrderTrackingComponent from "../../components/OrderTracking";
+import NotFound from "../NotFound";
 
 const BreadCrumbWrapper = styled.div`
   display: flex;
@@ -105,6 +106,11 @@ const FormComponent = styled.form`
   gap: 8px;
 `;
 
+const ErrorMsg = styled.div`
+  font-size: 14px;
+  color: red;
+`;
+
 const FORM_DATA = [
   {
     key: "pdp_link",
@@ -174,6 +180,7 @@ const trackingList = [
 ];
 
 export default function BidDetails() {
+  const [errorMessage, setErrorMessage] = useState(null);
   const [shipmentData, setShipmentData] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [appliedBids, setAppliedBids] = useState([]);
@@ -222,10 +229,14 @@ export default function BidDetails() {
         pdp_link: formData?.pdp_link,
       };
       const result = await MainService.applyBid(payload);
-
-      await listAppliedBids();
-      setModalOpen(false);
-      reset({});
+      const data = result.data;
+      if (data.success) {
+        await listAppliedBids();
+        setModalOpen(false);
+        reset({});
+      } else {
+        setErrorMessage(data?.message);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -414,26 +425,22 @@ export default function BidDetails() {
             <ListingWrapper>
               <Header>Bid List</Header>
 
-              {/* <TabsContainer>
-                <Tabs
-                  selectedTab={activeTab}
-                  tabList={tabsData}
-                  onClick={handleTabClick}
-                />
-              </TabsContainer> */}
-              {appliedBids?.length > 0 && (
+              {appliedBids?.length > 0 ? (
                 <BidListing>
                   {appliedBids?.map((data, index) => {
+                    // debugger;
                     return (
                       <AppliedBidCard
                         key={index}
                         onClick={handleOrderClick}
                         data={data}
-                        active={data?.bid_id === bid_data?.bid_id}
+                        active={data?.is_winner}
                       />
                     );
                   })}
                 </BidListing>
+              ) : (
+                <NotFound />
               )}
             </ListingWrapper>
           </DetailsComponent>
@@ -480,6 +487,7 @@ export default function BidDetails() {
                 );
               })}
 
+              {errorMessage && <ErrorMsg>Error: {errorMessage}</ErrorMsg>}
               <Button type="submit">Submit</Button>
             </FormComponent>
           </ModalWrapper>

@@ -10,6 +10,7 @@ import MainService from "../../services/main-service";
 import Button from "../../components/Button";
 import { useForm } from "react-hook-form";
 import GetInput from "../../components/TextInput/GetInput";
+import NotFound from "../NotFound";
 // import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div``;
@@ -248,25 +249,31 @@ export default function Ledgers() {
           />
         </TabsContainer>
 
-        <ListingContainer>
-          {dataList.map((data, index) => (
-            <LedgerCard
-              key={index}
-              onClick={handlePayout}
-              data={data}
-              activeTab={activeTab}
-              company_id={company_id}
-            />
-          ))}
-          <Pagination
-            total={total}
-            tablePageNumber={currentPage}
-            rowsPerPage={limit}
-            setTablePageNumber={(num) => {
-              setCurrentPage(num);
-            }}
-          />
-        </ListingContainer>
+        {dataList?.length > 0 ? (
+          <>
+            <ListingContainer>
+              {dataList.map((data, index) => (
+                <LedgerCard
+                  key={index}
+                  onClick={handlePayout}
+                  data={data}
+                  activeTab={activeTab}
+                  company_id={company_id}
+                />
+              ))}
+              <Pagination
+                total={total}
+                tablePageNumber={currentPage}
+                rowsPerPage={limit}
+                setTablePageNumber={(num) => {
+                  setCurrentPage(num);
+                }}
+              />
+            </ListingContainer>
+          </>
+        ) : (
+          <NotFound />
+        )}
       </Wrapper>
 
       {isModalOpen && (

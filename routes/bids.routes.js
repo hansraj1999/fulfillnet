@@ -383,7 +383,7 @@ router.post("/:bid_id/apply", async (req, res, next) => {
     console.log(result);
 
     return res.send({
-      success: true,
+      success: data?.success,
       message: data?.message,
     });
   } catch (err) {

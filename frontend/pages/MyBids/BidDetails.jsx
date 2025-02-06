@@ -249,13 +249,6 @@ export default function BidDetails() {
               <Header>Bid List</Header>
               {appliedBids?.length > 0 ? (
                 <>
-                  {/* <TabsContainer>
-                <Tabs
-                  selectedTab={activeTab}
-                  tabList={tabsData}
-                  onClick={handleTabClick}
-                />
-              </TabsContainer> */}
                   {appliedBids?.length > 0 && (
                     <BidListing>
                       {appliedBids?.map((data, index) => (
@@ -264,7 +257,7 @@ export default function BidDetails() {
                           onClick={bidApprovalHandler}
                           data={data}
                           type="approval"
-                          // active={data?.bid_id === bid_data?.bid_id}
+                          active={data?.is_winner}
                         />
                       ))}
                     </BidListing>
