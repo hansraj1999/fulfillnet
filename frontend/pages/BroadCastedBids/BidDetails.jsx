@@ -12,6 +12,7 @@ import Button from "../../components/Button";
 import { useForm } from "react-hook-form";
 import GetInput from "../../components/TextInput/GetInput";
 import MainService from "../../services/main-service";
+import OrderTrackingComponent from "../../components/OrderTracking";
 
 const BreadCrumbWrapper = styled.div`
   display: flex;
@@ -150,7 +151,18 @@ const getInitialFormValues = (formData) => {
   return intialValues;
 };
 
+const trackingList = [
+  { text: "Placed", is_passed: true, is_current: true },
+  { text: "Confirmed", is_passed: false, is_current: false },
+  { text: "DP Assigned", is_passed: false, is_current: false },
+  { text: "Packed", is_passed: false, is_current: false },
+  { text: "In Transit", is_passed: false, is_current: false },
+  { text: "Out for Delivery", is_passed: false, is_current: false },
+  { text: "Delivered", is_passed: false, is_current: false },
+];
+
 export default function BidDetails() {
+  const [shipmentData, setShipmentData] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [appliedBids, setAppliedBids] = useState([]);
   const location = useLocation();
@@ -173,7 +185,11 @@ export default function BidDetails() {
 
   useEffect(() => {
     listAppliedBids();
-  }, []);
+
+    if (bid_data?.new_fynd_order_id) {
+      getOrderDetails();
+    }
+  }, [bid_data]);
 
   const handleTabClick = (selectedTab) => {
     let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
@@ -209,6 +225,24 @@ export default function BidDetails() {
       const { data } = result?.data;
 
       setAppliedBids(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getOrderDetails = async () => {
+    try {
+      const result = await MainService.getOrderByID({
+        order_id: bid_data?.new_fynd_order_id,
+        winning_company_id: company_id,
+      });
+      const { success, data } = result.data;
+
+      if (success) {
+        const { shipments } = data;
+        // const shipment = order?.shipments[]
+        setShipmentData(shipments[0]);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -351,6 +385,15 @@ export default function BidDetails() {
                 <Value>{bid_data?.delivery_details?.pincode}</Value>
               </Section>
             </DetailWrapper>
+
+            {shipmentData?.tracking_list?.length && (
+              <>
+                <div className="divider"></div>
+                <OrderTrackingComponent
+                  tracking_list={shipmentData?.tracking_list}
+                />
+              </>
+            )}
 
             <div className="divider"></div>
 

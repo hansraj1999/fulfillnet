@@ -37,6 +37,10 @@ const Endpoints = {
     const { bid_id } = params;
     return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${bid_id}/approve`);
   },
+  GET_ORDER_BY_ID(params) {
+    const { order_id, winning_company_id } = params;
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/orders/${order_id}/winning_company_id/${winning_company_id}`);
+  },
 };
 
 export default Endpoints;

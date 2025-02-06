@@ -8,6 +8,7 @@ const { readFileSync } = require("fs");
 const productRouter = express.Router();
 const companyRoutes = require("./routes/company.routes");
 const bidsRoutes = require("./routes/bids.routes");
+const orderRoutes = require("./routes/order.routes");
 const { fdkExtension } = require("./fdk");
 
 const STATIC_PATH =
@@ -77,6 +78,7 @@ productRouter.get(
 platformApiRoutes.use("/products", productRouter);
 platformApiRoutes.use("/company", companyRoutes);
 platformApiRoutes.use("/bids", bidsRoutes);
+platformApiRoutes.use("/orders", orderRoutes);
 
 // If you are adding routes outside of the /api path,
 // remember to also add a proxy rule for them in /frontend/vite.config.js

@@ -50,6 +50,10 @@ const MainService = {
       shipment_id,
     });
   },
+  getOrderByID(params = {}) {
+    const { order_id, winning_company_id } = params;
+    return axios.get(URLS.GET_ORDER_BY_ID({ order_id, winning_company_id }));
+  },
 };
 
 export default MainService;

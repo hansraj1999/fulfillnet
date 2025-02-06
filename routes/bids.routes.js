@@ -226,15 +226,15 @@ router.post("/:bid_id/approve", async (req, res, next) => {
     }
 
     const bag = shipment?.bags[0];
-    const inventory_details = await platformClientExternal.catalog.getInventories({
-      itemId: String(bag?.item?.id),
-      size: bag?.item?.size,
-    });
+    const inventory_details =
+      await platformClientExternal.catalog.getInventories({
+        itemId: String(bag?.item?.id),
+        size: bag?.item?.size,
+      });
     const item_details = inventory_details?.items[0];
-    if(!item_details) {
+    if (!item_details) {
       throw new Error("Order cannot be placed, no inventory found");
     }
-
 
     // get bid details
     // const GET_BID_URL = `${BASE_URL}/bids/${bid_id}`;
