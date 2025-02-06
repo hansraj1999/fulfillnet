@@ -104,6 +104,18 @@ export const AppliedBidCard = (props = {}) => {
                 <span>Date:</span> {isoDateConverter(data?.created_at)}
               </p>
             </BlockComponent>
+            <BlockComponent>
+              <p>
+                <span>PDP Link:</span>{" "}
+                <a
+                  href={data?.pdp_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Link
+                </a>
+              </p>
+            </BlockComponent>
           </LeftWrapper>
           <RightWrapper>
             {type === "approval" && (

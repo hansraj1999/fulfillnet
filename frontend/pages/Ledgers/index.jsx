@@ -150,6 +150,8 @@ export default function Ledgers() {
   const [total, setTotal] = useState(0);
 
   const handleTabClick = (selectedTab) => {
+    setSelectedLedger(null);
+    setLedgerAccountDetails(null);
     let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
     setActiveTab(newTab);
   };
@@ -209,6 +211,8 @@ export default function Ledgers() {
       debugger;
 
       if (data?.success) {
+        await getAllLedgers();
+
         reset();
         setModalOpen(false);
         setLedgerAccountDetails(null);

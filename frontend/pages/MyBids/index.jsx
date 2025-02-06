@@ -7,6 +7,7 @@ import { ORDERS_DATA } from "./constant";
 import Pagination from "../../components/Pagination";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import MainService from "../../services/main-service";
+import NotFound from "../NotFound";
 // import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div``;
@@ -98,33 +99,39 @@ export default function MyBids() {
           },
         ]}
       />
-      <Wrapper>
-        <TabsContainer>
-          <Tabs
-            selectedTab={activeTab}
-            tabList={tabsData}
-            onClick={handleTabClick}
-          />
-        </TabsContainer>
-
-        <ListingContainer>
-          {bidList.map((data, index) => (
-            <BidCardComponent
-              key={index}
-              onClick={handleOrderClick}
-              data={data}
+      {bidList?.length > 0 ? (
+        <Wrapper>
+          <TabsContainer>
+            <Tabs
+              selectedTab={activeTab}
+              tabList={tabsData}
+              onClick={handleTabClick}
             />
-          ))}
-          <Pagination
-            total={total}
-            tablePageNumber={currentPage}
-            rowsPerPage={limit}
-            setTablePageNumber={(num) => {
-              setCurrentPage(num);
-            }}
-          />
-        </ListingContainer>
-      </Wrapper>
+          </TabsContainer>
+
+          <ListingContainer>
+            {bidList.map((data, index) => (
+              <BidCardComponent
+                key={index}
+                onClick={handleOrderClick}
+                data={data}
+              />
+            ))}
+            <Pagination
+              total={total}
+              tablePageNumber={currentPage}
+              rowsPerPage={limit}
+              setTablePageNumber={(num) => {
+                setCurrentPage(num);
+              }}
+            />
+          </ListingContainer>
+        </Wrapper>
+      ) : (
+        <>
+          <NotFound />
+        </>
+      )}
     </>
   );
 }

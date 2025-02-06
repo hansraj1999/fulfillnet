@@ -223,6 +223,7 @@ export default function BidDetails() {
       };
       const result = await MainService.applyBid(payload);
 
+      await listAppliedBids();
       setModalOpen(false);
       reset({});
     } catch (err) {

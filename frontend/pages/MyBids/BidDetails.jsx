@@ -11,6 +11,7 @@ import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import { AppliedBidCard } from "../../components/BidCards/AppliedBidCard";
 import MainService from "../../services/main-service";
 import OrderTrackingComponent from "../../components/OrderTracking";
+import NotFound from "../NotFound";
 
 const DetailsComponent = styled.div`
   background-color: white;
@@ -119,6 +120,8 @@ export default function BidDetails() {
       });
 
       const data = result?.data;
+
+      await listAppliedBids();
     } catch (err) {
       console.log(err);
     }
@@ -242,29 +245,35 @@ export default function BidDetails() {
             )}
 
             <div className="divider"></div>
-
             <ListingWrapper>
               <Header>Bid List</Header>
-
-              {/* <TabsContainer>
+              {appliedBids?.length > 0 ? (
+                <>
+                  {/* <TabsContainer>
                 <Tabs
                   selectedTab={activeTab}
                   tabList={tabsData}
                   onClick={handleTabClick}
                 />
               </TabsContainer> */}
-              {appliedBids?.length > 0 && (
-                <BidListing>
-                  {appliedBids?.map((data, index) => (
-                    <AppliedBidCard
-                      key={index}
-                      onClick={bidApprovalHandler}
-                      data={data}
-                      type="approval"
-                      active={data?.bid_id === bid_data?.bid_id}
-                    />
-                  ))}
-                </BidListing>
+                  {appliedBids?.length > 0 && (
+                    <BidListing>
+                      {appliedBids?.map((data, index) => (
+                        <AppliedBidCard
+                          key={index}
+                          onClick={bidApprovalHandler}
+                          data={data}
+                          type="approval"
+                          // active={data?.bid_id === bid_data?.bid_id}
+                        />
+                      ))}
+                    </BidListing>
+                  )}
+                </>
+              ) : (
+                <>
+                  <NotFound />
+                </>
               )}
             </ListingWrapper>
           </DetailsComponent>

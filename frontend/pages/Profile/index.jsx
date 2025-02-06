@@ -240,6 +240,8 @@ export default function Profile() {
 
       await MainService.addBankDetails(payload);
 
+      await getProfileDetails();
+
       setModalOpen(false);
       reset();
     } catch (err) {
@@ -298,27 +300,27 @@ export default function Profile() {
           <DetailWrapper>
             <Section>
               <Label>Accound Number:</Label>
-              <Value>{profileDetails?.account_number}</Value>
+              <Value>{profileDetails?.account_number || "-"}</Value>
             </Section>
             <Section>
               <Label>Beneficiary Name:</Label>
-              <Value>{profileDetails?.beneficiary_name}</Value>
+              <Value>{profileDetails?.beneficiary_name || "-"}</Value>
             </Section>
             <Section>
               <Label>IFSC Code:</Label>
-              <Value>{profileDetails?.ifsc}</Value>
+              <Value>{profileDetails?.ifsc || "-"}</Value>
             </Section>
             <Section>
               <Label>Bank Name:</Label>
-              <Value>{profileDetails?.bank_name}</Value>
+              <Value>{profileDetails?.bank_name || "-"}</Value>
             </Section>
             <Section>
               <Label>Accoun Type:</Label>
-              <Value>{profileDetails?.account_type}</Value>
+              <Value>{profileDetails?.account_type || "-"}</Value>
             </Section>
             <Section>
               <Label>VPA ID:</Label>
-              <Value>{profileDetails?.vpa}</Value>
+              <Value>{profileDetails?.vpa || "-"}</Value>
             </Section>
           </DetailWrapper>
         </DetailsWrapper>
