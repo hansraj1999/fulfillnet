@@ -107,6 +107,18 @@ const FormComponent = styled.form`
 
 const FORM_DATA = [
   {
+    key: "pdp_link",
+    label: "PDP Link",
+    name: "pdp_link",
+    default: "",
+    type: "text",
+    inputStyle: "contained",
+    placeholder: "Enter PDP Link",
+    validation: {
+      required: "PDP link is required.",
+    },
+  },
+  {
     key: "amount",
     label: "Bid Price",
     name: "amount",
@@ -207,6 +219,7 @@ export default function BidDetails() {
         company_id,
         bid_id: bid_data?.bid_id,
         amount: formData?.amount,
+        pdp_link: formData?.pdp_link,
       };
       const result = await MainService.applyBid(payload);
 
