@@ -410,6 +410,52 @@ router.get("/:bid_id/applied/list", async (req, res, next) => {
   }
 });
 
+router.post("/:company_id/ledger/:ledger_id", async (req, res, next) => {
+  const { ledger_id, company_id } = req.params;
+  const { utr } = req.body;
+  try {
+    const URL = `${BASE_URL}/${company_id}/ledger/${ledger_id}`;
+
+    const result = await axios.post(URL, { utr });
+    const { data } = result;
+
+    return res.send({
+      success: true,
+      message: data?.message,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/:company_id/ledger/list", async (req, res, next) => {
+  const { pageNo = 1, pageSize = 10, filter = null } = req.query;
+  try {
+    const { fdkSession, body } = req;
+    const { company_id } = fdkSession;
+
+    const URL = `${BASE_URL}/${company_id}/ledger`;
+    const result = await axios.get(URL, {
+      params: {
+        limit: pageSize,
+        page: pageNo,
+        filter,
+      },
+    });
+    const { data } = result;
+
+    return res.send({
+      success: data?.success,
+      item_total: data?.total,
+      pageNo: data?.page,
+      pageSize: data?.limit,
+      data: data?.ledger,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.use((err, req, res, next) => {
   //   logger.error("error in cart router", err);
 

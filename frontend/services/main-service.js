@@ -54,6 +54,20 @@ const MainService = {
     const { order_id, winning_company_id } = params;
     return axios.get(URLS.GET_ORDER_BY_ID({ order_id, winning_company_id }));
   },
+  getAllLedgers(params = {}) {
+    const { company_id, ...rest } = params;
+    return axios.get(URLS.GET_ALL_LEDGERS({ company_id }), {
+      params: { ...rest },
+    });
+  },
+  payoutLedger(params = {}) {
+    const { company_id, ledger_id, utr } = params;
+    return axios.post(URLS.PAYOUT_LEDGER({ company_id, ledger_id }), { utr });
+  },
+  getProfileDetailsByCompanyID(params = {}) {
+    const { company_id } = params;
+    return axios.get(URLS.PROFILE_BY_COMPANY_ID({ company_id }));
+  },
 };
 
 export default MainService;

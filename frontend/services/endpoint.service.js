@@ -41,6 +41,18 @@ const Endpoints = {
     const { order_id, winning_company_id } = params;
     return urlJoin(EXAMPLE_MAIN_URL, `/api/orders/${order_id}/winning_company_id/${winning_company_id}`);
   },
+  GET_ALL_LEDGERS(params) {
+    const { company_id } = params;
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${company_id}/ledger/list`);
+  },
+  PAYOUT_LEDGER(params) {
+    const { company_id, ledger_id } = params;
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${company_id}/ledger/${ledger_id}`);
+  },
+  PROFILE_BY_COMPANY_ID(params) {
+    const { company_id } = params;
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/company/${company_id}/profile-details`);
+  },
 };
 
 export default Endpoints;

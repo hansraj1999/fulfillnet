@@ -46,6 +46,26 @@ router.post("/add-account-details", async (req, res, next) => {
   }
 });
 
+router.get("/:company_id/profile-details", async (req, res, next) => {
+  try {
+    const { company_id } = req.params;
+
+    const URL = `${BASE_URL}/${company_id}/details`;
+    const { data } = await axios.get(URL);
+
+    if (data) {
+      return res.send({
+        success: true,
+        data: data,
+      });
+    } else {
+      throw new Error("Interval Server Error");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/profile-details", async (req, res, next) => {
   try {
     const { fdkSession } = req;

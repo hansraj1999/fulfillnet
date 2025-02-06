@@ -61,7 +61,7 @@ const ButtonComponent = styled(Button)`
   padding: 10px 14px;
 `;
 
-const order_data = {
+const data = {
   image:
     "https://cdn.pixelbin.io/v2/jiomart-fynd/jio-np/wrkr/jmrtz0/company/4/applications/6662dc89737d4feb4a159821/application/pictures/free-logo/original/oihGd7-9G-JioMart-Bazaar-MP.png",
   shipment_id: "17374414491481935071",
@@ -72,49 +72,44 @@ const order_data = {
 };
 
 export default function LedgerCard(props = {}) {
-  const { onClick, orderData: order_data } = props;
+  const { onClick, data, activeTab } = props;
+  let company_text = activeTab === "to_pay" ? "To Company" : "From Company";
   return (
     <>
       <ListComponent className="list-component">
         <ListWrapper>
           <LeftWrapper>
-            <ImageComponent>
-              <img src={order_data.image} />
-            </ImageComponent>
             <BlockComponent>
               <p>
-                <span>Winner Company:</span> {order_data?.winner_company?.name}
+                <span>Compnay Name:</span> {data?.ordering_company_name}
               </p>
               <p>
-                <span>Created At:</span>{" "}
-                {isoDateConverter(order_data?.created_at)}
+                <span>Created At:</span> {isoDateConverter(data?.created_at)}
               </p>
             </BlockComponent>
             <BlockComponent>
               <p>
-                <span>Price:</span> {order_data?.amount}
+                <span>Amount:</span> {data?.amount}
               </p>
-              <p>
-                <span>Bid Offered:</span> {order_data?.amount}
-              </p>
-            </BlockComponent>
-            <BlockComponent>
-              <p>
-                <span>Status:</span> {order_data?.status}
-              </p>
+              {/* {data.status === "active" && (
+                <p>
+                  <span>Status:</span> Unpaid
+                </p>
+              )} */}
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>
-            <BlockComponent>
-              <ButtonComponent
-                mode="text"
-                size="small"
-                mode="primary"
-                onClick={() => onClick(order_data)}
-              >
-                {"Settle"}
-              </ButtonComponent>
-            </BlockComponent>
+            {activeTab === "to_pay" && (
+              <BlockComponent>
+                <ButtonComponent
+                  size="small"
+                  mode="primary"
+                  onClick={() => onClick(data)}
+                >
+                  {"Settle"}
+                </ButtonComponent>
+              </BlockComponent>
+            )}
           </RightWrapper>
         </ListWrapper>
       </ListComponent>
