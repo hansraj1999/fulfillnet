@@ -99,6 +99,7 @@ export default function BidDetails() {
       const result = await MainService.approveBid({
         bid_id: bidData?.bid_id,
         winner_company_id: bidData?.company_id,
+        shipment_id: bid_data?.shipment_id,
       });
 
       const data = result?.data;

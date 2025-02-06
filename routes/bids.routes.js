@@ -1,7 +1,161 @@
 const express = require("express");
 const axios = require("axios");
+const { fdkExtension } = require("../fdk");
+
 const router = express.Router();
 const BASE_URL = "http://13.233.29.234:8000";
+
+const createShipmentPayload = ({
+  shipment,
+  bag,
+  item_details,
+  original_bid_details,
+  applied_bid_details,
+  application,
+}) => {
+  const fulfilling_store = shipment?.fulfilling_store;
+  // const bag = shipment?.bag[0];
+
+  const payload = {
+    shipments: [
+      {
+        priority: 0,
+        external_shipment_id: shipment?.shipment_id,
+        line_items: [
+          {
+            seller_identifier: item_details.seller_identifier,
+            charges: [
+              {
+                amount: {
+                  currency: "INR",
+                  value: applied_bid_details?.amount,
+                },
+                type: "amount_paid",
+                name: "amount_paid",
+              },
+              {
+                amount: {
+                  currency: "INR",
+                  value: applied_bid_details?.amount,
+                },
+                type: "price_effective",
+                name: "price_effective",
+              },
+              {
+                amount: {
+                  currency: "INR",
+                  value: applied_bid_details?.amount,
+                },
+                type: "price_marked",
+                name: "price_marked",
+              },
+              {
+                amount: {
+                  currency: "INR",
+                  value: applied_bid_details?.amount,
+                },
+                type: "mrp",
+                name: "mrp",
+              },
+              {
+                amount: {
+                  currency: "INR",
+                  value: applied_bid_details?.amount,
+                },
+                type: "unit_price",
+                name: "unit_price",
+              },
+              {
+                amount: {
+                  currency: "INR",
+                  value: 0.0,
+                },
+                type: "delivery_charge",
+                name: "delivery_charge",
+              },
+              {
+                amount: {
+                  currency: "INR",
+                  value: 0.0,
+                },
+                type: "promotion_effective_discount",
+                name: "promotion_effective_discount",
+              },
+            ],
+            quantity: bag.quantity,
+          },
+        ],
+        order_type: "HomeDelivery",
+        location_id: item_details?.store?.uid,
+      },
+    ],
+    payment_info: {
+      payment_mode: "PP",
+      primary_mode: "PP",
+      payment_methods: [
+        {
+          name: "PP",
+          mode: "PP",
+          amount: applied_bid_details?.amount,
+          collect_by: "seller",
+          refund_by: "seller",
+          meta: {
+            merchant_code: "Reseller",
+            payment_gateway: "Reseller",
+            payment_identifier: shipment?.fynd_order_id,
+          },
+        },
+      ],
+    },
+    application_id: application?._id,
+    external_creation_date: shipment.created_at,
+    billing_info: {
+      // update
+      first_name: fulfilling_store?.store_name,
+      country: fulfilling_store?.country,
+      city: fulfilling_store?.city,
+      pincode: fulfilling_store?.pincode,
+      last_name: "",
+      primary_mobile_number: fulfilling_store?.phone, // update
+      primary_email: fulfilling_store?.store_email, // update
+      state: fulfilling_store?.state,
+      address1: fulfilling_store?.address,
+    },
+    config: {
+      optimal_shipment_creation: false,
+      integration_type: "application",
+      primary_indentifier: application?._id, // application id
+      payment: {
+        source: "ECOMM",
+        mode_of_payment: "seller",
+      },
+      location_reassignment: false,
+      dp_configuration: {
+        shipping_by: "seller",
+      },
+    },
+    ordering_channel: "ECOMM",
+    shipping_by: "seller",
+    shipping_info: {
+      first_name: fulfilling_store?.store_name,
+      country: fulfilling_store?.country,
+      city: fulfilling_store?.city,
+      pincode: fulfilling_store?.pincode,
+      last_name: "",
+      primary_mobile_number: fulfilling_store?.phone,
+      primary_email: fulfilling_store?.store_email,
+      customer_code: "",
+      external_customer_code: "",
+      state: fulfilling_store?.state,
+      address1: fulfilling_store?.address,
+    },
+    dp_configuration: {
+      shipping_by: "seller",
+    },
+    order_type: "NEW",
+  };
+  return payload;
+};
 
 router.post("/register/bid", async (req, res, next) => {
   try {
@@ -52,12 +206,70 @@ router.post("/register/bid", async (req, res, next) => {
 
 router.post("/:bid_id/approve", async (req, res, next) => {
   try {
-    const { fdkSession, params, body } = req;
+    const { platformClient, fdkSession, params, body } = req;
     const { bid_id } = params;
-    const { winner_company_id } = body;
+    const { winner_company_id, shipment_id } = body;
     const { company_id } = fdkSession;
 
-    const URL = `${BASE_URL}/${company_id}/bid/${bid_id}/winner?winner_company_id=${winner_company_id}`;
+    const platformClientExternal = await fdkExtension.getPlatformClient(
+      winner_company_id
+    );
+
+    const shipment_details = await platformClient.order.getShipmentById({
+      shipmentId: shipment_id,
+    });
+    const shipment = shipment_details?.shipments.find(
+      (item) => item.shipment_id == shipment_id
+    );
+    if (!shipment) {
+      throw new Error("No Shipment found");
+    }
+
+    const bag = shipment?.bags[0];
+    const inventory_details = await platformClientExternal.catalog.getInventories({
+      itemId: String(bag?.item?.id),
+      size: bag?.item?.size,
+    });
+    const item_details = inventory_details?.items[0];
+    if(!item_details) {
+      throw new Error("Order cannot be placed, no inventory found");
+    }
+
+
+    // get bid details
+    // const GET_BID_URL = `${BASE_URL}/bids/${bid_id}`;
+    // const bid_result = await axios.get(GET_BID_URL);
+    // const original_bid_details = bid_result?.data;
+
+    // get applied bid details
+    const GET_APPLIED_BID_URL = `${BASE_URL}/${winner_company_id}/bids/${bid_id}/applied`;
+    const applied_bid = await axios.get(GET_APPLIED_BID_URL);
+    if (Object.keys(applied_bid?.data).length <= 0) {
+      throw new Error("No applied bid found");
+    }
+    const applied_bid_details = applied_bid?.data;
+
+    // application list
+    const { items: application_list } =
+      await platformClient.configuration.getApplications();
+    if (application_list.length <= 0) {
+      throw new Error("No sales channel found to place the order");
+    }
+
+    const orderPaylaod = createShipmentPayload({
+      shipment,
+      bag,
+      item_details,
+      // original_bid_details,
+      applied_bid_details,
+      application: application_list[0],
+    });
+
+    const order_result = await platformClientExternal.order.createOrder({
+      body: orderPaylaod,
+    });
+
+    const URL = `${BASE_URL}/${company_id}/bid/${bid_id}/winner?winner_company_id=${winner_company_id}&fynd_order_id=${order_result?.fynd_order_id}`;
     const result = await axios.post(URL);
     const { data } = result;
 

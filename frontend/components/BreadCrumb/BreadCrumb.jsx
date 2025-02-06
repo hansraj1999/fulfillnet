@@ -26,8 +26,8 @@ const BreadCrumbText = styled.p`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 0;
 
-  color: #000000a6;
   font-style: normal;
   font-weight: 700;
   font-size: 12px;
@@ -35,6 +35,15 @@ const BreadCrumbText = styled.p`
 
   a {
     color: var(--grey-80);
+    text-decoration: none;
+  }
+
+  .breadcrumb-link {
+    color: #1b12d3;
+  }
+  .active-breadcrumb-link {
+    text-decoration: none;
+    color: #1296d3;
   }
 `;
 
@@ -56,6 +65,11 @@ export default function BreadCrumb({ breadCrumbList }) {
                 data-testid={`breadcrumb-${item.key}`}
               >
                 <Link
+                  className={
+                    item.link === "current"
+                      ? "active-breadcrumb-link"
+                      : "breadcrumb-link"
+                  }
                   to={
                     item.link === "current"
                       ? window.location.pathname

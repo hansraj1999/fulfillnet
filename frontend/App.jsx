@@ -154,7 +154,7 @@ function App() {
             {
               key: "home",
               label: "Home",
-              // link: "current",
+              link: "current",
             },
           ]}
         />
