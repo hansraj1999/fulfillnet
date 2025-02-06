@@ -111,12 +111,12 @@ function App() {
       route: "profile",
       buttonText: "Next",
     },
-    {
-      title: "Products",
-      desc: "List Products",
-      route: "products",
-      buttonText: "Next",
-    },
+    // {
+    //   title: "Products",
+    //   desc: "List Products",
+    //   route: "products",
+    //   buttonText: "Next",
+    // },
   ]);
 
   const handleCompanyRegisteration = async () => {
