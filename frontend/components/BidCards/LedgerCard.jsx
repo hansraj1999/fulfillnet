@@ -72,8 +72,13 @@ const data = {
 };
 
 export default function LedgerCard(props = {}) {
-  const { onClick, data, activeTab } = props;
-  let company_text = activeTab === "to_pay" ? "To Company" : "From Company";
+  const { onClick, data, activeTab, company_id } = props;
+
+  let button_text =
+    activeTab === "paid" && Number(company_id) === data?.winner_company_id
+      ? "Got Paid"
+      : "Paid";
+
   return (
     <>
       <ListComponent className="list-component">
@@ -81,7 +86,7 @@ export default function LedgerCard(props = {}) {
           <LeftWrapper>
             <BlockComponent>
               <p>
-                <span>Compnay Name:</span> {data?.ordering_company_name}
+                <span>Company Name:</span> {data?.ordering_company_name}
               </p>
               <p>
                 <span>Created At:</span> {isoDateConverter(data?.created_at)}
@@ -99,16 +104,32 @@ export default function LedgerCard(props = {}) {
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>
-            {activeTab === "to_pay" && (
-              <BlockComponent>
-                <ButtonComponent
-                  size="small"
-                  mode="primary"
-                  onClick={() => onClick(data)}
-                >
-                  {"Settle"}
-                </ButtonComponent>
-              </BlockComponent>
+            {activeTab === "to_pay" ? (
+              <>
+                <BlockComponent>
+                  <ButtonComponent
+                    size="small"
+                    mode="primary"
+                    onClick={() => onClick(data)}
+                  >
+                    {"Settle"}
+                  </ButtonComponent>
+                </BlockComponent>
+              </>
+            ) : activeTab === "to_be_get_paid" ? (
+              <></>
+            ) : (
+              <>
+                <BlockComponent>
+                  <ButtonComponent
+                    size="small"
+                    mode="primary"
+                    // onClick={() => onClick(data)}
+                  >
+                    {button_text}
+                  </ButtonComponent>
+                </BlockComponent>
+              </>
             )}
           </RightWrapper>
         </ListWrapper>

@@ -430,9 +430,9 @@ router.post("/:company_id/ledger/:ledger_id", async (req, res, next) => {
 
 router.get("/:company_id/ledger/list", async (req, res, next) => {
   const { pageNo = 1, pageSize = 10, filter = null } = req.query;
+  const { company_id } = req.params;
   try {
     const { fdkSession, body } = req;
-    const { company_id } = fdkSession;
 
     const URL = `${BASE_URL}/${company_id}/ledger`;
     const result = await axios.get(URL, {

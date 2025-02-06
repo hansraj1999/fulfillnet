@@ -251,6 +251,7 @@ export default function Ledgers() {
               onClick={handlePayout}
               data={data}
               activeTab={activeTab}
+              company_id={company_id}
             />
           ))}
           <Pagination
