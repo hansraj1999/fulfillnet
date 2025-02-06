@@ -11,6 +11,8 @@ const bidsRoutes = require("./routes/bids.routes");
 const orderRoutes = require("./routes/order.routes");
 const { fdkExtension } = require("./fdk");
 
+require("dotenv").config();
+
 const STATIC_PATH =
   process.env.NODE_ENV === "production"
     ? path.join(process.cwd(), "frontend", "public", "dist")
