@@ -5,6 +5,13 @@ const {
 } = require("@gofynd/fdk-extension-javascript/express/storage");
 const sqliteInstance = new sqlite3.Database("session_storage.db");
 
+console.log({
+  EXTENSION_API_KEY: process.env.EXTENSION_API_KEY,
+  EXTENSION_API_SECRET: process.env.EXTENSION_API_SECRET,
+  EXTENSION_BASE_URL: process.env.EXTENSION_BASE_URL,
+  FP_API_DOMAIN: process.env.FP_API_DOMAIN,
+});
+
 const fdkExtension = setupFdk({
   api_key: process.env.EXTENSION_API_KEY,
   api_secret: process.env.EXTENSION_API_SECRET,
