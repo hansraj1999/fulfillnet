@@ -218,6 +218,7 @@ export default function BidDetails() {
                       onClick={bidApprovalHandler}
                       data={data}
                       type="approval"
+                      active={data?.bid_id === bid_data?.bid_id}
                     />
                   ))}
                 </BidListing>

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Button from "../Button";
 
 const ListComponent = styled.div`
-  background: rgb(255, 255, 255);
   border: 1px solid rgb(224, 224, 224);
   border-radius: 8px;
   padding: 16px 24px;
@@ -13,6 +12,8 @@ const ListComponent = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 18px;
+
+  background: ${({ active }) => (active ? "#00fd6921" : "#fff")};
 
   margin: 10px 0 10px 0;
 `;
@@ -37,6 +38,7 @@ const RightWrapper = styled.div`
   align-items: center;
 `;
 const ImageComponent = styled.div`
+  background-color: white;
   img {
     width: 50px;
     height: 100%;
@@ -77,10 +79,10 @@ const ButtonComponent = styled(Button)`
 `;
 
 export const AppliedBidCard = (props = {}) => {
-  const { onClick, data, type = "listing" } = props;
+  const { onClick, data, type = "listing", active } = props;
   return (
     <>
-      <ListComponent className="bid-card-component">
+      <ListComponent className="bid-card-component" active={active}>
         <ListWrapper>
           <LeftWrapper>
             <ImageComponent>

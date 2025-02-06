@@ -366,13 +366,16 @@ export default function BidDetails() {
               </TabsContainer> */}
               {appliedBids?.length > 0 && (
                 <BidListing>
-                  {appliedBids?.map((data, index) => (
-                    <AppliedBidCard
-                      key={index}
-                      onClick={handleOrderClick}
-                      data={data}
-                    />
-                  ))}
+                  {appliedBids?.map((data, index) => {
+                    return (
+                      <AppliedBidCard
+                        key={index}
+                        onClick={handleOrderClick}
+                        data={data}
+                        active={data?.bid_id === bid_data?.bid_id}
+                      />
+                    );
+                  })}
                 </BidListing>
               )}
             </ListingWrapper>
