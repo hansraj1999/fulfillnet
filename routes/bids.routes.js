@@ -195,6 +195,26 @@ router.post("/register/bid", async (req, res, next) => {
     const URL = `${BASE_URL}/${company_id}/register/bid`;
     const { data } = await axios.post(URL, payload);
 
+    if (data?.success) {
+      const result = await platformClient.order.postShipmentHistory({
+        body: {
+          activity_history: [
+            {
+              filters: [
+                {
+                  shipment_id: shipment_id,
+                },
+              ],
+              data: {
+                user_name: "FulFillNet",
+                message: `Bid place successfully with Bid ID=${data?.bid_id}`,
+              },
+            },
+          ],
+        },
+      });
+    }
+
     return res.send({
       success: data?.success,
       message: data?.message,
@@ -272,6 +292,25 @@ router.post("/:bid_id/approve", async (req, res, next) => {
     const URL = `${BASE_URL}/${company_id}/bid/${bid_id}/winner?winner_company_id=${winner_company_id}&fynd_order_id=${order_result?.fynd_order_id}`;
     const result = await axios.post(URL);
     const { data } = result;
+    if (data?.success) {
+      const result = await platformClient.order.postShipmentHistory({
+        body: {
+          activity_history: [
+            {
+              filters: [
+                {
+                  shipment_id: shipment_id,
+                },
+              ],
+              data: {
+                user_name: "FulFillNet",
+                message: `Bid order place with Fynd Order ID=${order_result?.fynd_order_id}`,
+              },
+            },
+          ],
+        },
+      });
+    }
 
     return res.send({
       success: true,
