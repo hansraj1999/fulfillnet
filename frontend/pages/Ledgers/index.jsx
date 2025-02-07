@@ -272,7 +272,7 @@ export default function Ledgers() {
             </ListingContainer>
           </>
         ) : (
-          <NotFound />
+          <NotFound text={"No transaction found"} />
         )}
       </Wrapper>
 

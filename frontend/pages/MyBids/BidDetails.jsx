@@ -266,7 +266,7 @@ export default function BidDetails() {
                 </>
               ) : (
                 <>
-                  <NotFound />
+                  <NotFound text={"No Bids Available"} />
                 </>
               )}
             </ListingWrapper>

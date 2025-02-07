@@ -441,7 +441,7 @@ export default function BidDetails() {
                   })}
                 </BidListing>
               ) : (
-                <NotFound />
+                <NotFound text={"No Bid Available"} />
               )}
             </ListingWrapper>
           </DetailsComponent>

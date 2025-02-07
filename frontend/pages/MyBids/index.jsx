@@ -129,7 +129,7 @@ export default function MyBids() {
         </Wrapper>
       ) : (
         <>
-          <NotFound />
+          <NotFound text={"No Bids Available"} />
         </>
       )}
     </>

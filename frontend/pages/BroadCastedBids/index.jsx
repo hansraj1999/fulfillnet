@@ -131,7 +131,7 @@ export default function BroadCastedBids() {
         </Wrapper>
       ) : (
         <>
-          <NotFound />
+          <NotFound text={"No Bids Available"} />
         </>
       )}
     </>
