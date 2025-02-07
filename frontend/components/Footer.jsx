@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import HomeIcon from "../public/assets/Home.svg";
 import MobileIcon from "../public/assets/MobileIcon.svg";
@@ -81,72 +80,65 @@ const Copyright = styled.p`
 `;
 
 const Footer = () => {
-  const location = useLocation();
-  const isShipmentRoute = location.pathname.includes("/shipment");
+  return (
+    <FooterContainer>
+      <FooterWrapper>
+        {/* Column 1 */}
+        <Column>
+          <Title>FulFilNet</Title>
+          <Text>
+            Enabling resellers to auction unfulfilled orders, bid, and
+            collaborate for seamless fulfillment.
+          </Text>
+        </Column>
 
-  return isShipmentRoute ? (
-    <>
-      <FooterContainer>
-        <FooterWrapper>
-          {/* Column 1 */}
-          <Column>
-            <Title>FulFilNet</Title>
-            <Text>
-              Enabling resellers to auction unfulfilled orders, bid, and
-              collaborate for seamless fulfillment.
-            </Text>
-          </Column>
+        {/* Column 3 */}
+        <Column>
+          <Title>Resources</Title>
+          <List>
+            <ListItem
+              onClick={() =>
+                window.open(
+                  "https://example.com",
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
+            >
+              Walk through
+            </ListItem>
+            <ListItem>FAQs (Upcoming)</ListItem>
+          </List>
+        </Column>
 
-          {/* Column 3 */}
-          <Column>
-            <Title>Resources</Title>
-            <List>
-              <ListItem
-                onClick={() =>
-                  window.open(
-                    "https://example.com",
-                    "_blank",
-                    "noopener,noreferrer"
-                  )
-                }
-              >
-                Walk through
-              </ListItem>
-              <ListItem>FAQs (Upcoming)</ListItem>
-            </List>
-          </Column>
-
-          {/* Column 4 */}
-          <Column>
-            <Title>Contact</Title>
-            <Contacts>
-              <ContactItem>
-                <Icon>
-                  <img src={HomeIcon} />
-                </Icon>
-                Fynd, WeWork Vijay Diamond, Cross Rd B, M.I.D.C, Ajit Nagar,
-                Kondivita, Andheri East, Mumbai, Maharashtra 400093
-              </ContactItem>
-              <ContactItem>
-                <Icon>
-                  <img src={MailIcon} />
-                </Icon>
-                hansrajdeghun@gofynd.com <br /> abhishekgupta@gofynd.com
-              </ContactItem>
-              <ContactItem>
-                <Icon>
-                  <img src={MobileIcon} />
-                </Icon>
-                +91 7758005274 <br /> +91 8830073205
-              </ContactItem>
-            </Contacts>
-          </Column>
-        </FooterWrapper>
-        {/* <Copyright>© 2020 Copyright: MDBootstrap.com</Copyright> */}
-      </FooterContainer>
-    </>
-  ) : (
-    <></>
+        {/* Column 4 */}
+        <Column>
+          <Title>Contact</Title>
+          <Contacts>
+            <ContactItem>
+              <Icon>
+                <img src={HomeIcon} />
+              </Icon>
+              Fynd, WeWork Vijay Diamond, Cross Rd B, M.I.D.C, Ajit Nagar,
+              Kondivita, Andheri East, Mumbai, Maharashtra 400093
+            </ContactItem>
+            <ContactItem>
+              <Icon>
+                <img src={MailIcon} />
+              </Icon>
+              hansrajdeghun@gofynd.com <br /> abhishekgupta@gofynd.com
+            </ContactItem>
+            <ContactItem>
+              <Icon>
+                <img src={MobileIcon} />
+              </Icon>
+              +91 7758005274 <br /> +91 8830073205
+            </ContactItem>
+          </Contacts>
+        </Column>
+      </FooterWrapper>
+      {/* <Copyright>© 2020 Copyright: MDBootstrap.com</Copyright> */}
+    </FooterContainer>
   );
 };
 
