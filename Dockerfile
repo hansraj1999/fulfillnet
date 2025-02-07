@@ -1,5 +1,5 @@
 FROM node:18-alpine
-EXPOSE 443
+EXPOSE 8080
 WORKDIR /app
 COPY ./package.json .
 COPY ./package-lock.json .
