@@ -273,15 +273,15 @@ export default function Profile() {
           <DetailWrapper>
             <Section>
               <Label>Company Name:</Label>
-              <Value>{profileDetails?.name}</Value>
+              <Value>{profileDetails?.name || "-"}</Value>
             </Section>
             <Section>
               <Label>Company ID:</Label>
-              <Value>{profileDetails?.company_id}</Value>
+              <Value>{profileDetails?.company_id || "-"}</Value>
             </Section>
             <Section>
               <Label>Mobile Number:</Label>
-              <Value>{profileDetails?.mobile_number}</Value>
+              <Value>{profileDetails?.mobile_number || "-"}</Value>
             </Section>
           </DetailWrapper>
         </DetailsWrapper>
