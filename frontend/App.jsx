@@ -163,9 +163,9 @@ function App() {
     const result = await MainService.getProfileDetailsByCompanyID({
       company_id,
     });
-    const { data: profileDetails } = result?.data;
+    const { data: profileDetails, success } = result?.data;
 
-    if (!profileDetails) {
+    if (!success) {
       handleCompanyRegisteration();
     } else {
       const isVerified = profileDetails?.account_number;
