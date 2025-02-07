@@ -25,6 +25,7 @@ const BreadCrumbWrapper = styled.div`
 const DetailsComponent = styled.div`
   background-color: white;
   border-radius: 25px;
+  margin-top: 16px;
   /* padding: 24px; */
 
   .divider {
