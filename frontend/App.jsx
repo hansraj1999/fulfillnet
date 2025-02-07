@@ -18,7 +18,7 @@ const HeaderComponent = styled.div`
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   /* margin: 22px; */
 
@@ -148,6 +148,7 @@ function App() {
     const result = await MainService.registerCompany({
       company_id,
     });
+
     const data = result?.data;
 
     if (data?.success) {

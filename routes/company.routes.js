@@ -52,15 +52,13 @@ router.get("/:company_id/profile-details", async (req, res, next) => {
 
     const URL = `${BASE_URL}/${company_id}/details`;
     const { data } = await axios.get(URL);
+    const profile = data?.data;
 
-    if (data) {
-      return res.send({
-        success: true,
-        data: data,
-      });
-    } else {
-      throw new Error("Interval Server Error");
-    }
+    return res.send({
+      success: data?.success,
+      data: data?.success ? profile : null,
+      message: data?.message,
+    });
   } catch (err) {
     next(err);
   }
@@ -73,15 +71,13 @@ router.get("/profile-details", async (req, res, next) => {
 
     const URL = `${BASE_URL}/${company_id}/details`;
     const { data } = await axios.get(URL);
+    const profile = data?.data;
 
-    if (data) {
-      return res.send({
-        success: true,
-        data: data,
-      });
-    } else {
-      throw new Error("Interval Server Error");
-    }
+    return res.send({
+      success: data?.success,
+      data: data?.success ? profile : null,
+      message: data?.message,
+    });
   } catch (err) {
     next(err);
   }
