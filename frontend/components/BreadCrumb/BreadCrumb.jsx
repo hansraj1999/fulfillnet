@@ -9,7 +9,7 @@ const BreadCrumbWrapper = styled.div`
   gap: 4px;
   white-space: nowrap;
   position: relative;
-  margin: 16px 0;
+  margin: 0;
   img {
     width: 20px;
     height: 20px;

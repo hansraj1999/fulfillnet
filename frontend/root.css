@@ -1,15 +1,11 @@
 body {
   height: 100%;
-  font-family: Inter;
+  font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
+
 
   p {
     font-size: 14px;
   }
-
-  padding: 16px;
-  background-color: white;
-  border-radius: 4px;
-  margin: 12px;
 
   input:focus {
     outline: none; /* Removes the default outline */

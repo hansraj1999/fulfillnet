@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  padding: 16px 0;
   /* margin: 22px; */
 
   p {
@@ -203,6 +204,7 @@ function Home() {
             ]}
           />
         </HeaderComponent>
+
         <Wrapper>
           {actionCards?.map((item, idx) => {
             return (
