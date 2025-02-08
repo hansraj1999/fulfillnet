@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
 // import { getCompany } from "./Utilities/company.util";
 import BreadCrumb from "../components/BreadCrumb/BreadCrumb";
 import MainService from "../services/main-service";
 import InfoIcon from "../public/assets/Info.svg";
+import { useAppContext } from "../ContextProvider";
 // import BidOrder from "./components/BidOrder";
 
 const HeaderComponent = styled.div`
@@ -102,6 +103,8 @@ const CustomCards = (props) => {
 };
 
 function Home() {
+  const { state, dispatch } = useAppContext();
+  const location = useLocation();
   const { company_id } = useParams();
   const navigate = useNavigate();
   const [userVeirfied, setUserVerified] = useState(true);
@@ -137,6 +140,14 @@ function Home() {
     //   buttonText: "Next",
     // },
   ]);
+
+  useEffect(() => {
+    const isShipmentRoute = location.pathname.includes("/shipment");
+    dispatch({
+      type: "IS_SHIPMENT_PAGE",
+      payload: { isShipmentPage: isShipmentRoute },
+    });
+  }, [location.pathname, dispatch]);
 
   const handleCompanyRegisteration = async () => {
     setUserVerified(false);

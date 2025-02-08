@@ -1,10 +1,11 @@
-import React from "react";
-import { ToastContainer } from "react-toastify";
+import React, { createContext } from "react";
+// import { ToastContainer } from "react-toastify";
 import { RouterProvider } from "react-router-dom";
 import styled from "styled-components";
 
 import router from "./router";
 import Footer from "./components/Footer";
+import { useAppContext } from "./ContextProvider";
 // import BidOrder from "./components/BidOrder";
 const AppComponent = styled.div`
   background: white;
@@ -14,6 +15,8 @@ const RouterContainer = styled.div`
 `;
 
 function App() {
+  const { state } = useAppContext();
+  
   return (
     <>
       <AppComponent>
@@ -21,7 +24,7 @@ function App() {
           <RouterProvider router={router} />
         </RouterContainer>
 
-        <Footer />
+        {!state.isShipmentPage && <Footer />}
       </AppComponent>
     </>
   );

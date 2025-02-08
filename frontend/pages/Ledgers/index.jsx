@@ -209,7 +209,6 @@ export default function Ledgers() {
       });
 
       const data = result.data;
-      debugger;
 
       if (data?.success) {
         await getAllLedgers();

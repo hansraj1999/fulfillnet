@@ -7,6 +7,7 @@ import GetInput from "../TextInput/GetInput";
 import Button from "../Button";
 import { setCompany } from "../../Utilities/company.util";
 import MainService from "../../services/main-service";
+import { useAppContext } from "../../ContextProvider";
 
 const Header = styled.div`
   font-size: 16px;
@@ -64,6 +65,7 @@ const getInitialFormValues = (formData) => {
 };
 
 export default function BidOrder(props = {}) {
+  const { dispatch } = useAppContext();
   const [errorMessage, setErrorMessage] = useState(null);
   const [bidCreated, setBidCreated] = useState(false);
   const location = useLocation();
@@ -73,6 +75,14 @@ export default function BidOrder(props = {}) {
   console.log("pageUrl----", pageUrl);
 
   useEffect(() => {
+    const isShipmentRoute = location.pathname.includes("/shipment");
+    dispatch({
+      type: "IS_SHIPMENT_PAGE",
+      payload: { isShipmentPage: isShipmentRoute },
+    });
+  }, [location.pathname, dispatch]);
+
+  useEffect(() => {
     if (pageUrl) {
       const regex = /\/company\/(\d+)\//;
       const match = pageUrl.match(regex);
@@ -80,7 +90,7 @@ export default function BidOrder(props = {}) {
 
       setCompany(companyId);
     }
-  }, pageUrl);
+  }, [pageUrl]);
   // debugger;
 
   const {
@@ -126,7 +136,7 @@ export default function BidOrder(props = {}) {
       <BidOrderComponent>
         {bidCreated ? (
           <>
-            <Header>Created Successfully</Header>
+            <Header>Bid Created Successfully</Header>
           </>
         ) : (
           <>
