@@ -5,7 +5,7 @@ const BaseButton = styled.button`
   font-style: normal;
   font-weight: 700;
   line-height: 24px;
-  border-radius: 50px;
+  border-radius: 3px;
   font-size: ${({ size }) =>
     size === "default" ? "16px" : size === "small" ? "14px" : "16px"};
   letter-spacing: ${({ size }) =>
@@ -54,13 +54,14 @@ const BaseButton = styled.button`
 `;
 
 const OutlineButton = styled(BaseButton)`
-  color: #25408f;
+  color: #2e31be;
   background: white;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #2e31be;
 `;
 
 const PrimaryButton = styled(BaseButton)`
-  background: #25408f;
+  background: #2e31be;
+  border: none;
 `;
 
 const TextButton = styled(BaseButton)`

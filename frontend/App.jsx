@@ -29,8 +29,8 @@ const Wrapper = styled.div`
 
 const Card = styled.div`
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid #e4e5e6;
+  border-radius: 4px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -71,7 +71,7 @@ const NoteWrapper = styled.div`
 
   background: #fff3cd;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid #f8da85;
 `;
 const NoteIcon = styled.div`

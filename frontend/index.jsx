@@ -14,6 +14,7 @@ const RootWrapper = styled.div`
 
   padding: 16px;
   background-color: white;
+  border-radius: 4px;
   /* height: 100vh; */
   margin: 12px;
   /* height: 100%; */
