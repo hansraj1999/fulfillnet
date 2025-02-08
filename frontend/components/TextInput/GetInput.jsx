@@ -7,10 +7,10 @@ const Wrapper = styled.div``;
 const InputLabel = styled.p`
   font-style: normal;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 20px;
   letter-spacing: -0.48px;
-  color: black;
+  color: #41434c;
 
   margin: 0;
 `;
@@ -28,7 +28,7 @@ const ErrorText = styled.p`
   margin: 0px;
 `;
 const InfoText = styled.p`
-  color: black;
+  color: #41434c;
   font-style: normal;
   font-size: 12px;
   font-weight: 500;

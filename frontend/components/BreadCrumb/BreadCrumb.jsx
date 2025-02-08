@@ -29,7 +29,7 @@ const BreadCrumbText = styled.p`
   margin: 0;
 
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   line-height: 24px;
 
@@ -39,11 +39,11 @@ const BreadCrumbText = styled.p`
   }
 
   .breadcrumb-link {
-    color: #1b12d3;
+    color: #2e31be;
   }
   .active-breadcrumb-link {
     text-decoration: none;
-    color: #1296d3;
+    color: #7081fc;
   }
 `;
 

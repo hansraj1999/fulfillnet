@@ -85,7 +85,7 @@ const SelectWrapper = styled.div`
     switch (type) {
       case "outlined":
         return css`
-          border-bottom: 2px solid black;
+          border-bottom: 2px solid #41434c;
           padding-left: 0px;
         `;
       case "borderless":
@@ -111,7 +111,7 @@ const SelectWrapper = styled.div`
       default:
         return css`
           border: 1px solid grey;
-          border-radius: 12px;
+          border-radius: 4px;
         `;
     }
   }}
@@ -149,10 +149,10 @@ const SelectTitle = styled.div`
 `;
 
 const SelectedOption = styled.div`
-  color: grey;
+  color: #41434c;
   font-style: normal;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 16px;
   letter-spacing: -0.005em;
 
@@ -171,7 +171,7 @@ const SelectedOption = styled.div`
           font-size: 16px
           line-height: 24px;
           letter-spacing: -0.005em;
-          color: black;
+          color: #41434c;
         `;
       default:
         return css``;
@@ -181,13 +181,14 @@ const SelectedOption = styled.div`
 
 const SelectBox = styled.div`
   position: absolute;
-  color: black;
+  color: #41434c;
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
   line-height: 24px;
   letter-spacing: -0.005em;
-  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
   box-shadow: 0 0 8px 0 rgba(132, 116, 116, 0.1),
     0 8px 8px 0 rgba(0, 0, 0, 0.05);
   background: white;
@@ -212,6 +213,7 @@ const Options = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  font-weight: 500;
 
   ${({ active }) =>
     active &&
@@ -229,9 +231,9 @@ const Options = styled.div`
 const Placeholder = styled.div`
   color: #bfbfcf;
   font-style: normal;
-  font-weight: 700
-  font-size: 16px
-  line-height: 24px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
   letter-spacing: -0.005em;
 
   ${({ margin }) =>
@@ -249,7 +251,7 @@ const Placeholder = styled.div`
           font-size: 16px
           line-height: var(--line-height-24);
           letter-spacing: -0.005em;
-          color: black;
+          color: #41434c;
         `;
       default:
         return css``;
@@ -265,7 +267,7 @@ const SearchWrapper = styled.div`
     font-size: 14px;
     line-height: 24px;
     letter-spacing: -0.005em;
-    color: black;
+    color: #41434c;
   }
 `;
 

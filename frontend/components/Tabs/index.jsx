@@ -36,6 +36,11 @@ const TabText = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
+
+  ${({ isActive }) =>
+    css`
+      color: ${isActive ? "#2e31be" : "#41434c"};
+    `};
 `;
 
 const TabCount = styled.p`
@@ -67,7 +72,7 @@ const ActiveNavIndicator = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: black;
+  background-color: #2e31be;
 `;
 
 const TabItem = ({ item, isActive, handleTabClick, ...restProps }) => {
@@ -82,7 +87,7 @@ const TabItem = ({ item, isActive, handleTabClick, ...restProps }) => {
       id={"tab-" + item.key}
     >
       <TabTextWrapper color={color}>
-        <TabText>{label}</TabText>
+        <TabText isActive={isActive}>{label}</TabText>
         {count !== undefined && (
           <>
             {(!hideInactiveCount || isActive) &&

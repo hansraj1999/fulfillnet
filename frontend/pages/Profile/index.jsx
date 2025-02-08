@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import GetInput from "../../components/TextInput/GetInput";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import MainService from "../../services/main-service";
+import CrossIcon from "../../public/assets/Cross.svg";
 // import { getCompany } from "../../Utilities/company.util";
 
 const Wrapper = styled.div`
@@ -24,7 +25,8 @@ const HeaderWrapper = styled.div`
 `;
 const Header = styled.div`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+  color: #41434c;
 `;
 
 const DetailWrapper = styled.div`
@@ -32,19 +34,22 @@ const DetailWrapper = styled.div`
   flex-wrap: wrap;
 `;
 const Section = styled.div`
-  flex-basis: 25%;
-  max-width: 25%;
+  flex-basis: 20%;
   margin-bottom: 0px;
   padding-right: 0px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 12px 0;
 `;
 const Label = styled.p`
-  font-weight: bold;
   margin: 0;
+  color: #9b9b9b;
+  font-weight: 400;
+  line-height: 18px;
 `;
 const Value = styled.p`
   margin: 0;
+  color: #4d4d4e;
+  font-weight: 500;
+  line-height: 18px;
 `;
 
 const ButtonComponent = styled(Button)`
@@ -68,22 +73,25 @@ const ModalComponent = styled.div`
   justify-content: center;
 `;
 const ModalWrapper = styled.div`
-  padding: 24px;
+  padding: 32px 24px;
   background-color: white;
-  border-radius: 24px;
+  border-radius: 4px;
   width: 480px;
 `;
 const ModelHeader = styled.div`
   font-size: 18px;
   font-weight: bold;
   padding-bottom: 16px;
+  color: #41434c;
 `;
 const FormComponent = styled.form`
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
-
+const CrossButton = styled.img`
+  cursor: pointer;
+`;
 const FORM_DATA = [
   {
     key: "beneficiary_name",
@@ -332,7 +340,14 @@ export default function Profile() {
           <ModalWrapper>
             <HeaderWrapper>
               <ModelHeader>Account Details</ModelHeader>
-              <Button
+              <CrossButton
+                src={CrossIcon}
+                onClick={() => {
+                  reset();
+                  setModalOpen(false);
+                }}
+              />
+              {/* <Button
                 mode={"text"}
                 onClick={() => {
                   reset();
@@ -340,7 +355,7 @@ export default function Profile() {
                 }}
               >
                 X
-              </Button>
+              </Button> */}
             </HeaderWrapper>
 
             <FormComponent onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -366,8 +381,11 @@ export default function Profile() {
                   />
                 );
               })}
-
-              <Button type="submit">Submit</Button>
+              <div style={{ marginTop: "12px" }}>
+                <Button type="submit" width={"100%"}>
+                  Submit
+                </Button>
+              </div>
             </FormComponent>
           </ModalWrapper>
         </ModalComponent>

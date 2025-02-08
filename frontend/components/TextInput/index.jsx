@@ -10,7 +10,7 @@ const InputWrapper = styled.div`
       : border
       ? "1px solid grey"
       : "none"};
-  border-color: ${({ isError }) => (isError ? "red" : "black")};
+  border-color: ${({ isError }) => (isError ? "red" : "#41434c")};
 
   display: flex;
   flex-direction: row;
@@ -58,7 +58,7 @@ const InputWrapper = styled.div`
 `;
 
 const StyledInput = styled.input`
-border: none;
+  border: none;
   width: 100%;
   background: transparent;
   /* padding: ${({ size }) =>
@@ -67,7 +67,7 @@ border: none;
   font-size: 16px;
   font-weight: 500;
   line-height: 21px;
-  color: ${(props) => (props.disabled ? "#141414" : "#141414")};
+  color: ${(props) => (props.disabled ? "#41434C" : "#41434C")};
   padding-right: ${(props) => props.paddingRight};
 
   ::placeholder {

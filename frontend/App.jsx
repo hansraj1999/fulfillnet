@@ -59,9 +59,6 @@ const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const ButtonComponent = styled(Button)`
-  border-radius: 12px;
-`;
 
 const NoteWrapper = styled.div`
   display: flex;
@@ -69,15 +66,15 @@ const NoteWrapper = styled.div`
   align-items: center;
   gap: 8px;
 
-  background: #fff3cd;
+  background: #e7eeff;
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #f8da85;
+  border: 1px solid #2e31be;
 `;
 const NoteIcon = styled.div`
   font-size: 12px;
-  font-weight: bold;
-  color: #664d03;
+  font-weight: 500;
+  color: #41434c;
 `;
 const NoteText = styled.div``;
 
@@ -92,13 +89,13 @@ const CustomCards = (props) => {
           <Desc>{desc}</Desc>
         </CardBody>
         <CardFooter>
-          <ButtonComponent
+          <Button
             disabled={item?.route === "profile" ? false : disabled}
             size="small"
             onClick={onClick}
           >
             {buttonText}
-          </ButtonComponent>
+          </Button>
         </CardFooter>
       </Card>
     </>
