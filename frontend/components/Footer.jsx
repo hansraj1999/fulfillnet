@@ -16,7 +16,7 @@ const FooterContainer = styled.footer`
 const FooterWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
   flex-wrap: wrap;
 `;
