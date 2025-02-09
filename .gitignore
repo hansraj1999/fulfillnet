@@ -3,7 +3,7 @@ node_modules
 /dist
 /build
 
-
+.scannerwork
 # local env files
 .env.local
 .env.*.local
