@@ -25,6 +25,9 @@ const Endpoints = {
   GET_ALL_BIDS_BIDS() {
     return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/global/list`);
   },
+  GET_BID_DETAILS({ bid_id }) {
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/global/list`);
+  },
   APPLY_BID(params) {
     const { bid_id } = params;
     return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${bid_id}/apply`);
@@ -39,7 +42,10 @@ const Endpoints = {
   },
   GET_ORDER_BY_ID(params) {
     const { order_id, winning_company_id } = params;
-    return urlJoin(EXAMPLE_MAIN_URL, `/api/orders/${order_id}/winning_company_id/${winning_company_id}`);
+    return urlJoin(
+      EXAMPLE_MAIN_URL,
+      `/api/orders/${order_id}/winning_company_id/${winning_company_id}`
+    );
   },
   GET_ALL_LEDGERS(params) {
     const { company_id } = params;
@@ -47,11 +53,17 @@ const Endpoints = {
   },
   PAYOUT_LEDGER(params) {
     const { company_id, ledger_id } = params;
-    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${company_id}/ledger/${ledger_id}`);
+    return urlJoin(
+      EXAMPLE_MAIN_URL,
+      `/api/bids/${company_id}/ledger/${ledger_id}`
+    );
   },
   PROFILE_BY_COMPANY_ID(params) {
     const { company_id } = params;
-    return urlJoin(EXAMPLE_MAIN_URL, `/api/company/${company_id}/profile-details`);
+    return urlJoin(
+      EXAMPLE_MAIN_URL,
+      `/api/company/${company_id}/profile-details`
+    );
   },
 };
 

@@ -64,7 +64,7 @@ const StyledInput = styled.input`
   /* padding: ${({ size }) =>
     size === "small" ? "0px 0px 8px" : "0px 0px 8px"}; */
   height: 32px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 21px;
   color: ${(props) => (props.disabled ? "#41434C" : "#41434C")};

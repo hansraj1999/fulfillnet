@@ -70,6 +70,7 @@ const TextButton = styled(BaseButton)`
   padding: 0;
   height: auto;
   border: none;
+  font-weight: 500;
 `;
 
 const Button = ({

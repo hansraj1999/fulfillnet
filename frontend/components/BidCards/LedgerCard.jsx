@@ -6,14 +6,13 @@ import Button from "../Button";
 const ListComponent = styled.div`
   background: rgb(255, 255, 255);
   border: 1px solid rgb(224, 224, 224);
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 16px 24px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 18px;
-
   margin: 10px 0 10px 0;
 `;
 const ListWrapper = styled.div`
@@ -56,6 +55,18 @@ const BlockComponent = styled.div`
   }
 `;
 
+const BlockText = styled.div`
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 300;
+  color: ${({ color }) => color || "#41434c"};
+  margin: 0;
+
+  span {
+    color: #9b9b9b;
+  }
+`;
+
 const ButtonComponent = styled(Button)`
   font-size: 12px;
   padding: 10px 14px;
@@ -85,22 +96,33 @@ export default function LedgerCard(props = {}) {
         <ListWrapper>
           <LeftWrapper>
             <BlockComponent>
-              <p>
-                <span>Company Name:</span> {data?.ordering_company_name}
-              </p>
-              <p>
+              <BlockText color="#2e31be">
+                <span>Order ID:</span> {data?.new_fynd_order_id}
+              </BlockText>
+              <BlockText>
                 <span>Created At:</span> {isoDateConverter(data?.created_at)}
-              </p>
+              </BlockText>
             </BlockComponent>
             <BlockComponent>
-              <p>
+              <BlockText>
                 <span>Amount:</span> {data?.amount}
-              </p>
-              {/* {data.status === "active" && (
-                <p>
-                  <span>Status:</span> Unpaid
-                </p>
-              )} */}
+              </BlockText>
+              <BlockText>
+                <span>Item ID:</span> {data?.item_id}
+              </BlockText>
+            </BlockComponent>
+            <BlockComponent>
+              <BlockText>
+                <span>Company Name:</span> {data?.ordering_company_name}
+              </BlockText>
+              <BlockText>
+                <span>Company ID:</span> {data?.ordering_company_id}
+              </BlockText>
+            </BlockComponent>
+            <BlockComponent>
+              <BlockText>
+                <span>Status:</span> {data?.status}
+              </BlockText>
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>

@@ -12,6 +12,7 @@ import { AppliedBidCard } from "../../components/BidCards/AppliedBidCard";
 import MainService from "../../services/main-service";
 import OrderTrackingComponent from "../../components/OrderTracking";
 import NotFound from "../NotFound";
+import { isoDateConverter } from "../../Utilities/date.util";
 
 const DetailsComponent = styled.div`
   background-color: white;
@@ -27,7 +28,8 @@ const DetailsComponent = styled.div`
 
 const Header = styled.div`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+  color: #41434c;
 `;
 
 const DetailWrapper = styled.div`
@@ -35,19 +37,22 @@ const DetailWrapper = styled.div`
   flex-wrap: wrap;
 `;
 const Section = styled.div`
-  flex-basis: 25%;
-  max-width: 25%;
+  flex-basis: 24%;
   margin-bottom: 0px;
   padding-right: 0px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 12px 0;
 `;
 const Label = styled.p`
-  font-weight: bold;
   margin: 0;
+  color: #9b9b9b;
+  font-weight: 400;
+  line-height: 18px;
 `;
 const Value = styled.p`
   margin: 0;
+  color: #4d4d4e;
+  font-weight: 500;
+  line-height: 18px;
 `;
 
 const BidListing = styled.div``;
@@ -84,7 +89,7 @@ export default function BidDetails() {
   const [appliedBids, setAppliedBids] = useState([]);
   const { company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
-  const bid_data = location.state?.data;
+  const [bidData, setBidData] = useState(location.state?.data);
 
   // const handleTabClick = (selectedTab) => {
   //   let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
@@ -92,17 +97,30 @@ export default function BidDetails() {
   // };
 
   useEffect(() => {
-    listAppliedBids();
-
-    if (bid_data?.new_fynd_order_id) {
+    if (bidData?.new_fynd_order_id) {
       getOrderDetails();
     }
-  }, [bid_data]);
+    listAppliedBids();
+  }, [bidData]);
+
+  const fetchBidData = async () => {
+    try {
+      const result = await MainService.getBidDetails({
+        bid_id: bidData?.bid_id,
+      });
+      const { data } = result?.data;
+      debugger;
+
+      setAppliedBids(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const listAppliedBids = async () => {
     try {
       const result = await MainService.getAllAppliedBids({
-        bid_id: bid_data?.bid_id,
+        bid_id: bidData?.bid_id,
       });
       const { data } = result?.data;
 
@@ -117,12 +135,13 @@ export default function BidDetails() {
       const result = await MainService.approveBid({
         bid_id: bidData?.bid_id,
         winner_company_id: bidData?.company_id,
-        shipment_id: bid_data?.shipment_id,
+        shipment_id: bidData?.shipment_id,
       });
 
       const data = result?.data;
 
-      await listAppliedBids();
+      await fetchBidData();
+      // await getOrderDetails();
     } catch (err) {
       console.log(err);
     }
@@ -131,7 +150,7 @@ export default function BidDetails() {
   const getOrderDetails = async () => {
     try {
       const result = await MainService.getOrderByID({
-        order_id: bid_data?.new_fynd_order_id,
+        order_id: bidData?.new_fynd_order_id,
         winning_company_id: company_id,
       });
       const { success, data } = result.data;
@@ -177,32 +196,37 @@ export default function BidDetails() {
             <Header>Order Details</Header>
             <DetailWrapper>
               <Section>
-                <Label>Company ID:</Label>
-                <Value>{bid_data?.ordering_company_id}</Value>
-              </Section>
-              <Section>
-                <Label>Company Name:</Label>
-                <Value>{bid_data?.company_name}</Value>
-              </Section>
-              <Section>
                 <Label>Shipment ID:</Label>
-                <Value>{bid_data?.shipment_id}</Value>
+                <Value>{bidData?.shipment_id}</Value>
               </Section>
               <Section>
-                <Label>Created Date:</Label>
-                <Value>{bid_data?.created_at}</Value>
-              </Section>
-              <Section>
-                <Label>Bid Price:</Label>
-                <Value>{bid_data?.initial_bid_price}</Value>
+                <Label>Order ID:</Label>
+                <Value>{bidData?.fynd_order_id}</Value>
               </Section>
               <Section>
                 <Label>Quantity:</Label>
-                <Value>{bid_data?.quantity}</Value>
+                <Value>{bidData?.quantity}</Value>
+              </Section>
+              <Section>
+                <Label>Bid Price:</Label>
+                <Value>{bidData?.initial_bid_price}</Value>
               </Section>
               <Section>
                 <Label>Status:</Label>
-                <Value>{bid_data?.status}</Value>
+                <Value>{bidData?.status}</Value>
+              </Section>
+              <Section>
+                <Label>Company Name:</Label>
+                <Value>{bidData?.company_name}</Value>
+              </Section>
+              <Section>
+                <Label>Company ID:</Label>
+                <Value>{bidData?.ordering_company_id}</Value>
+              </Section>
+
+              <Section>
+                <Label>Bid Placed:</Label>
+                <Value>{isoDateConverter(bidData?.created_at)}</Value>
               </Section>
             </DetailWrapper>
 
@@ -211,28 +235,20 @@ export default function BidDetails() {
             <Header>Article Details</Header>
             <DetailWrapper>
               <Section>
+                <Label>Brand:</Label>
+                <Value>{bidData?.item_details?.brand || "-"}</Value>
+              </Section>
+              <Section>
                 <Label>Name:</Label>
-                <Value>{bid_data?.item_details?.name}</Value>
+                <Value>{bidData?.item_details?.name || "-"}</Value>
               </Section>
               <Section>
                 <Label>Size:</Label>
-                <Value>{bid_data?.item_details?.size}</Value>
+                <Value>{bidData?.item_details?.size}</Value>
               </Section>
               <Section>
-                <Label>Created Date:</Label>
-                <Value>{bid_data?.created_at}</Value>
-              </Section>
-              <Section>
-                <Label>Bid Price:</Label>
-                <Value>{bid_data?.initial_bid_price}</Value>
-              </Section>
-              <Section>
-                <Label>Quantity:</Label>
-                <Value>{bid_data?.quantity}</Value>
-              </Section>
-              <Section>
-                <Label>Status:</Label>
-                <Value>{bid_data?.status}</Value>
+                <Label>Item ID:</Label>
+                <Value>{bidData?.item_details?.id}</Value>
               </Section>
             </DetailWrapper>
 

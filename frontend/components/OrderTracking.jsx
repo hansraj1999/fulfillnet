@@ -60,7 +60,7 @@ const StepText = styled.div`
   text-align: center;
   font-size: 12px;
   margin-top: 8px;
-  font-weight: ${({ isCurrent }) => (isCurrent ? "bold" : "normal")};
+  font-weight: ${({ isCurrent }) => (isCurrent ? "600" : "normal")};
   color: ${({ isCurrent }) => (isCurrent ? "#22c55e" : "#6b7280")};
 `;
 

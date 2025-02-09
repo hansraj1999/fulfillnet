@@ -314,7 +314,7 @@ router.post("/:bid_id/approve", async (req, res, next) => {
 
     return res.send({
       success: true,
-      data: data,
+      data: { ...data },
     });
   } catch (err) {
     next(err);
@@ -456,6 +456,24 @@ router.post("/:company_id/ledger/:ledger_id", async (req, res, next) => {
     const URL = `${BASE_URL}/${company_id}/ledger/${ledger_id}`;
 
     const result = await axios.post(URL, { utr });
+    const { data } = result;
+
+    return res.send({
+      success: true,
+      message: data?.message,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/:bid_is/details", async (req, res, next) => {
+  const { bid_is } = req.params;
+  const { utr } = req.body;
+  try {
+    const URL = `${BASE_URL}/bids/${bid_is}`;
+
+    const result = await axios.get(URL);
     const { data } = result;
 
     return res.send({

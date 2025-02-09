@@ -13,7 +13,11 @@ import GetInput from "../../components/TextInput/GetInput";
 import NotFound from "../NotFound";
 // import { getCompany } from "../../Utilities/company.util";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .divider {
+    border-bottom: 1px solid #e0e0e0;
+  }
+`;
 const TabsContainer = styled.div``;
 const ListingContainer = styled.div``;
 
@@ -260,6 +264,7 @@ export default function Ledgers() {
                   company_id={company_id}
                 />
               ))}
+              <div className="divider"></div>
               <Pagination
                 total={total}
                 tablePageNumber={currentPage}
@@ -271,7 +276,7 @@ export default function Ledgers() {
             </ListingContainer>
           </>
         ) : (
-          <NotFound text={"No transaction found"} />
+          <NotFound text={"No Transaction Found"} />
         )}
       </Wrapper>
 

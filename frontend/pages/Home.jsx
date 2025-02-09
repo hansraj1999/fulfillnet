@@ -70,6 +70,8 @@ const NoteWrapper = styled.div`
   padding: 8px;
   border-radius: 4px;
   border: 1px solid #2e31be;
+
+  margin-bottom: 12px;
 `;
 const NoteIcon = styled.div`
   font-size: 12px;

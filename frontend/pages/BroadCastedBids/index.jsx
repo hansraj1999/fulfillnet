@@ -10,7 +10,11 @@ import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import MainService from "../../services/main-service";
 import NotFound from "../NotFound";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .divider {
+    border-bottom: 1px solid #e0e0e0;
+  }
+`;
 const TabsContainer = styled.div``;
 const ListingContainer = styled.div``;
 
@@ -114,13 +118,15 @@ export default function BroadCastedBids() {
           <ListingContainer>
             {bidList.map((data, index) => (
               <BidCardComponent
+                type="broadcasted_card"
                 key={index}
                 onClick={handleBidClick}
                 data={data}
               />
             ))}
+            <div className="divider"></div>
             <Pagination
-              total={total}
+              total={1000}
               tablePageNumber={currentPage}
               rowsPerPage={limit}
               setTablePageNumber={(num) => {

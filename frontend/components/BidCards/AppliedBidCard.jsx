@@ -3,9 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
 
-const ListComponent = styled.div`
-  border: 1px solid rgb(224, 224, 224);
-  border-radius: 8px;
+const ListComponent = styled.div`  
+  border-radius: 4px;
   padding: 16px 24px;
   display: flex;
   flex-direction: row;
@@ -13,6 +12,7 @@ const ListComponent = styled.div`
   align-items: center;
   gap: 18px;
 
+  border: ${({ active }) => (active ? "1px solid rgb(126 223 144)" : "1px solid rgb(224, 224, 224)")};
   background: ${({ active }) => (active ? "#00fd6921" : "#fff")};
 
   margin: 10px 0 10px 0;
@@ -59,11 +59,23 @@ const BlockComponent = styled.div`
   }
 `;
 
+const BlockText = styled.div`
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 300;
+  color: ${({ color }) => color || "#41434c"};
+  margin: 0;
+
+  span {
+    color: #9b9b9b;
+  }
+`;
+
 const Badge = styled.div`
-  font-weight: bold;
+  font-weight: 500;
   font-size: 12px;
   padding: 8px 12px;
-  border: 2px solid #00b26b;
+  border: 1px solid #00b26b;
   border-radius: 30px;
   cursor: pointer;
 
@@ -89,23 +101,23 @@ export const AppliedBidCard = (props = {}) => {
               <img src={data.item_image} />
             </ImageComponent> */}
             <BlockComponent>
-              <p>
+              <BlockText color="#2e31be">
                 <span>Company Name:</span> {data?.company_name}
-              </p>
-              <p>
-                <span>Company ID:</span> {data?.company_id}
-              </p>
+              </BlockText>
+              <BlockText>
+                <span>Bid Placed:</span> {isoDateConverter(data?.created_at)}
+              </BlockText>
             </BlockComponent>
             <BlockComponent>
-              <p>
+              <BlockText>
                 <span>Bid Price:</span> {data?.amount}
-              </p>
-              <p>
-                <span>Date:</span> {isoDateConverter(data?.created_at)}
-              </p>
+              </BlockText>
+              <BlockText>
+                <span>Company ID:</span> {data?.company_id}
+              </BlockText>
             </BlockComponent>
             <BlockComponent>
-              <p>
+              <BlockText>
                 <span>PDP Link:</span>{" "}
                 <a
                   href={data?.pdp_link}
@@ -114,7 +126,7 @@ export const AppliedBidCard = (props = {}) => {
                 >
                   Link
                 </a>
-              </p>
+              </BlockText>
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>

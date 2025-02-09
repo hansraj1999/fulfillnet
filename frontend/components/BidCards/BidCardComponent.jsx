@@ -5,8 +5,8 @@ import Button from "../Button";
 
 const ListComponent = styled.div`
   background: rgb(255, 255, 255);
-  border: 1px solid rgb(224, 224, 224);
-  border-radius: 8px;
+  border: 1px solid #e4e5e6;
+  border-radius: 4px;
   padding: 16px 24px;
   display: flex;
   flex-direction: row;
@@ -38,15 +38,17 @@ const RightWrapper = styled.div`
 `;
 const ImageComponent = styled.div`
   img {
-    width: 50px;
-    height: 100%;
+    border-radius: 4px;
+    height: 35px;
+    object-fit: cover;
+    width: 35px;
   }
 `;
 // const Image = styled.image``;
 const BlockComponent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 
   p {
     margin: 0;
@@ -54,6 +56,18 @@ const BlockComponent = styled.div`
     span {
       font-weight: bold;
     }
+  }
+`;
+
+const BlockText = styled.div`
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 300;
+  color: ${({ color }) => color || "#41434c"};
+  margin: 0;
+
+  span {
+    color: #9b9b9b;
   }
 `;
 
@@ -68,7 +82,7 @@ const order_data = {
 };
 
 export default function BidCardComponent(props = {}) {
-  const { onClick, data } = props;
+  const { onClick, data, type = null } = props;
   return (
     <>
       <ListComponent className="list-component">
@@ -78,31 +92,44 @@ export default function BidCardComponent(props = {}) {
               <img src={data.item_image} />
             </ImageComponent>
             <BlockComponent>
-              <p>
-                <span>Shipment ID:</span> {data?.shipment_id}
-              </p>
-              <p>
-                <span>Shipment Date:</span> {isoDateConverter(data?.created_at)}
-              </p>
+              {type === "broadcasted_card" ? (
+                <>
+                  <BlockText color="#2e31be">
+                    <span>Name: </span>
+                    {data?.item_details?.name}
+                  </BlockText>
+                </>
+              ) : (
+                <>
+                  <BlockText color="#2e31be">
+                    <span>Shipment ID: </span>
+                    {data?.shipment_id}
+                  </BlockText>
+                </>
+              )}
+
+              <BlockText>
+                <span>Bid Placed:</span> {isoDateConverter(data?.created_at)}
+              </BlockText>
             </BlockComponent>
             <BlockComponent>
-              <p>
+              <BlockText>
                 <span>Bid Price:</span> {data?.initial_bid_price}
-              </p>
-              <p>
+              </BlockText>
+              <BlockText>
                 <span>Quantity:</span> {data?.quantity}
-              </p>
+              </BlockText>
               {/* <p>
                 <span>Bid Offer Price:</span> {data?.price}
               </p> */}
             </BlockComponent>
             <BlockComponent>
-              <p>
+              <BlockText>
                 <span>Status:</span> {data?.status}
-              </p>
-              <p>
+              </BlockText>
+              <BlockText>
                 <span>Company Name:</span> {data?.company_name}
-              </p>
+              </BlockText>
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>

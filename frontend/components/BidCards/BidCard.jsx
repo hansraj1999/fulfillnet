@@ -6,7 +6,7 @@ import Button from "../Button";
 const ListComponent = styled.div`
   background: rgb(255, 255, 255);
   border: 1px solid rgb(224, 224, 224);
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 16px 24px;
   display: flex;
   flex-direction: row;

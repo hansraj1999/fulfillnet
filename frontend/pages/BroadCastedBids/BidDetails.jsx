@@ -14,6 +14,8 @@ import GetInput from "../../components/TextInput/GetInput";
 import MainService from "../../services/main-service";
 import OrderTrackingComponent from "../../components/OrderTracking";
 import NotFound from "../NotFound";
+import { isoDateConverter } from "../../Utilities/date.util";
+import CrossIcon from "../../public/assets/Cross.svg";
 
 const BreadCrumbWrapper = styled.div`
   display: flex;
@@ -36,7 +38,8 @@ const DetailsComponent = styled.div`
 
 const Header = styled.div`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+  color: #41434c;
 `;
 
 const DetailWrapper = styled.div`
@@ -44,19 +47,22 @@ const DetailWrapper = styled.div`
   flex-wrap: wrap;
 `;
 const Section = styled.div`
-  flex-basis: 25%;
-  max-width: 25%;
+  flex-basis: 24%;
   margin-bottom: 0px;
   padding-right: 0px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 16px 0;
 `;
 const Label = styled.p`
-  font-weight: bold;
   margin: 0;
+  color: #9b9b9b;
+  font-weight: 400;
+  line-height: 18px;
 `;
 const Value = styled.p`
   margin: 0;
+  color: #4d4d4e;
+  font-weight: 500;
+  line-height: 18px;
 `;
 
 const BidListing = styled.div``;
@@ -65,7 +71,7 @@ const ListingWrapper = styled.div``;
 const TabsContainer = styled.div``;
 const ButtonComponent = styled(Button)`
   padding: 16px;
-  font-size: 14px;
+  font-size: 12px;
   height: 12px;
 `;
 
@@ -91,15 +97,19 @@ const ModalComponent = styled.div`
   justify-content: center;
 `;
 const ModalWrapper = styled.div`
-  padding: 24px;
+  padding: 24px 12px;
   background-color: white;
-  border-radius: 24px;
+  border-radius: 4px;
   width: 480px;
+  padding: 32px 24px;
 `;
 const ModelHeader = styled.div`
   font-size: 18px;
   font-weight: bold;
   padding-bottom: 16px;
+`;
+const CrossButton = styled.img`
+  cursor: pointer;
 `;
 const FormComponent = styled.form`
   display: flex;
@@ -308,42 +318,12 @@ export default function BidDetails() {
       ) : (
         <>
           <DetailsComponent>
-            <Header>Order Details</Header>
+            <Header>Bid Details</Header>
             <DetailWrapper>
               <Section>
-                <Label>Company ID:</Label>
-                <Value>{bid_data?.ordering_company_id}</Value>
+                <Label>Brand:</Label>
+                <Value>{bid_data?.item_details?.brand}</Value>
               </Section>
-              <Section>
-                <Label>Company Name:</Label>
-                <Value>{bid_data?.company_name}</Value>
-              </Section>
-              <Section>
-                <Label>Shipment ID:</Label>
-                <Value>{bid_data?.shipment_id}</Value>
-              </Section>
-              <Section>
-                <Label>Created Date:</Label>
-                <Value>{bid_data?.created_at}</Value>
-              </Section>
-              <Section>
-                <Label>Bid Price:</Label>
-                <Value>{bid_data?.initial_bid_price}</Value>
-              </Section>
-              <Section>
-                <Label>Quantity:</Label>
-                <Value>{bid_data?.quantity}</Value>
-              </Section>
-              <Section>
-                <Label>Status:</Label>
-                <Value>{bid_data?.status}</Value>
-              </Section>
-            </DetailWrapper>
-
-            <div className="divider"></div>
-
-            <Header>Article Details</Header>
-            <DetailWrapper>
               <Section>
                 <Label>Name:</Label>
                 <Value>{bid_data?.item_details?.name}</Value>
@@ -353,21 +333,31 @@ export default function BidDetails() {
                 <Value>{bid_data?.item_details?.size}</Value>
               </Section>
               <Section>
-                <Label>Created Date:</Label>
-                <Value>{bid_data?.created_at}</Value>
+                <Label>Quantity:</Label>
+                <Value>{bid_data?.quantity}</Value>
               </Section>
               <Section>
                 <Label>Bid Price:</Label>
                 <Value>{bid_data?.initial_bid_price}</Value>
               </Section>
               <Section>
-                <Label>Quantity:</Label>
-                <Value>{bid_data?.quantity}</Value>
+                <Label>Bid Placed:</Label>
+                <Value>{isoDateConverter(bid_data?.created_at)}</Value>
               </Section>
               <Section>
                 <Label>Status:</Label>
                 <Value>{bid_data?.status}</Value>
               </Section>
+              <Section>
+                <Label>Company ID:</Label>
+                <Value>{bid_data?.ordering_company_id}</Value>
+              </Section>
+              <Section>
+                <Label>Company Name:</Label>
+                <Value>{bid_data?.company_name}</Value>
+              </Section>
+
+              
             </DetailWrapper>
 
             <div className="divider"></div>
@@ -454,15 +444,13 @@ export default function BidDetails() {
           <ModalWrapper>
             <HeaderWrapper>
               <ModelHeader>Apply for Bid</ModelHeader>
-              <Button
-                mode={"text"}
+              <CrossButton
+                src={CrossIcon}
                 onClick={() => {
                   reset();
                   setModalOpen(false);
                 }}
-              >
-                X
-              </Button>
+              />
             </HeaderWrapper>
 
             <FormComponent onSubmit={handleSubmit(onBidSubmit)} noValidate>
@@ -490,7 +478,11 @@ export default function BidDetails() {
               })}
 
               {errorMessage && <ErrorMsg>Error: {errorMessage}</ErrorMsg>}
-              <Button type="submit">Submit</Button>
+              <div style={{ marginTop: "12px" }}>
+                <Button width="100%" type="submit">
+                  Submit
+                </Button>
+              </div>
             </FormComponent>
           </ModalWrapper>
         </ModalComponent>

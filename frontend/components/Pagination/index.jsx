@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import leftArrow from "../../public/assets/left_arrow.svg";
-import ArrowRight from "../../public/assets/right_arrow.svg";
 
 const PaginationComponent = styled.div`
   display: flex;
@@ -10,7 +9,19 @@ const PaginationComponent = styled.div`
   justify-content: space-between;
   padding: 12px 0px;
 `;
-const PaginationWrapper = styled.div``;
+const PaginationResult = styled.div`
+  color: #41434c;
+  font-size: 12px;
+`;
+const PaginationWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+
+  color: #41434c;
+  font-size: 12px;
+`;
 const PaginationArrow = styled.img`
   height: 16px;
   cursor: pointer;
@@ -18,13 +29,10 @@ const PaginationArrow = styled.img`
   ${({ type }) => {
     switch (type) {
       case "left":
-        return css`
-          margin-right: 20px;
-        `;
+        return css``;
       case "right":
         return css`
           transform: rotate(180deg);
-          margin-left: 10px;
         `;
     }
   }}
@@ -32,9 +40,9 @@ const PaginationArrow = styled.img`
 const PaginatedNumber = styled.span`
   border-radius: var(--border-radius-50);
   color: var(--jds-dark-navy-blue-2);
-  height: 32px;
-  width: 32px;
-  margin-right: 10px;
+  /* height: 32px;
+  width: 32px; */
+  /* margin-right: 10px; */
   cursor: pointer;
   ${({ active }) =>
     active &&
@@ -102,17 +110,17 @@ export default function Pagination(props = {}) {
   return (
     <PaginationComponent className="dFA jcsB">
       {paginationOption?.resultCounter && (
-        <div>
+        <PaginationResult>
           Showing {tablePageNumber * rowsPerPage - rowsPerPage + 1} -{" "}
           {total > tablePageNumber * rowsPerPage
             ? tablePageNumber * rowsPerPage
             : total}{" "}
           of {total} results
-        </div>
+        </PaginationResult>
       )}
       {Math.ceil(total / rowsPerPage) > 1 && (
         <PaginationWrapper className="dFA">
-          {tablePageNumber > 1 && (
+          {tablePageNumber <= 1 && (
             <PaginationArrow
               type="left"
               src={leftArrow}

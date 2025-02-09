@@ -6,7 +6,7 @@ const Wrapper = styled.div``;
 
 const InputLabel = styled.p`
   font-style: normal;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 20px;
   letter-spacing: -0.48px;
