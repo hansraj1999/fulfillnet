@@ -173,16 +173,12 @@ function Home() {
     const result = await MainService.getProfileDetailsByCompanyID({
       company_id,
     });
-    const { data: profileDetails, success } = result?.data;
+    const { data: profileDetails, success } = result?.data; 
+    const is_verified = profileDetails?.is_verified;
 
-    if (!success) {
+    if (!is_verified) {
+      setUserVerified(false);
       handleCompanyRegisteration();
-    } else {
-      const isVerified = profileDetails?.account_number;
-
-      if (!isVerified) {
-        setUserVerified(false);
-      }
     }
   };
 

@@ -201,9 +201,10 @@ export default function BidDetails() {
   const [shipmentData, setShipmentData] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const location = useLocation();
-  const { application_id, company_id } = useParams();
+  const { company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
-  const bid_data = location.state?.data;
+  const [bidData, setBidData] = useState(location.state?.data);
+  const [winnerProfileData, setWinnerProfileData] = useState();
 
   const [appliedBids, setAppliedBids] = useState([]);
   const [limit, setLimit] = useState(4);
@@ -224,12 +225,21 @@ export default function BidDetails() {
   const allValues = watch();
 
   useEffect(() => {
-    listAppliedBids();
-
-    if (bid_data?.new_fynd_order_id) {
-      getOrderDetails();
+    if (bidData?.new_fynd_order_id) {
+      fetchOrderRelatedData(bidData);
     }
-  }, [bid_data]);
+
+    if (bidData?.bid_id) {
+      listAppliedBids();
+    }
+  }, [bidData]);
+
+  const fetchOrderRelatedData = async (data) => {
+    await getOrderDetails(data);
+    await getCompanyProfile({
+      winner_company_id: bidData?.winner_company_id,
+    });
+  };
 
   const handleTabClick = (selectedTab) => {
     let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
@@ -244,10 +254,10 @@ export default function BidDetails() {
   const onBidSubmit = async (formData) => {
     try {
       const payload = {
-        item_id: bid_data?.item_details.id,
-        item_size: bid_data?.item_details.size,
+        item_id: bidData?.item_details.id,
+        item_size: bidData?.item_details.size,
         company_id,
-        bid_id: bid_data?.bid_id,
+        bid_id: bidData?.bid_id,
         amount: formData?.amount,
         pdp_link: formData?.pdp_link,
       };
@@ -270,10 +280,21 @@ export default function BidDetails() {
     }
   };
 
+  const getCompanyProfile = async ({ winner_company_id }) => {
+    const result = await MainService.getProfileDetailsByCompanyID({
+      company_id: winner_company_id,
+    });
+    const { data: profileDetails, success } = result?.data;
+
+    if (success) {
+      setWinnerProfileData(profileDetails);
+    }
+  };
+
   const listAppliedBids = async () => {
     try {
       const result = await MainService.getAllAppliedBids({
-        bid_id: bid_data?.bid_id,
+        bid_id: bidData?.bid_id,
         pageNo: currentPage,
         pageSize: limit,
       });
@@ -291,7 +312,7 @@ export default function BidDetails() {
   const getOrderDetails = async () => {
     try {
       const result = await MainService.getOrderByID({
-        order_id: bid_data?.new_fynd_order_id,
+        order_id: bidData?.new_fynd_order_id,
         winning_company_id: company_id,
       });
       const { success, data } = result.data;
@@ -344,39 +365,39 @@ export default function BidDetails() {
             <DetailWrapper>
               <Section>
                 <Label>Brand:</Label>
-                <Value>{bid_data?.item_details?.brand}</Value>
+                <Value>{bidData?.item_details?.brand}</Value>
               </Section>
               <Section>
                 <Label>Name:</Label>
-                <Value>{bid_data?.item_details?.name}</Value>
+                <Value>{bidData?.item_details?.name}</Value>
               </Section>
               <Section>
                 <Label>Size:</Label>
-                <Value>{bid_data?.item_details?.size}</Value>
+                <Value>{bidData?.item_details?.size}</Value>
               </Section>
               <Section>
                 <Label>Quantity:</Label>
-                <Value>{bid_data?.quantity}</Value>
+                <Value>{bidData?.quantity}</Value>
               </Section>
               <Section>
                 <Label>Bid Price:</Label>
-                <Value>{bid_data?.initial_bid_price}</Value>
+                <Value>{bidData?.initial_bid_price}</Value>
               </Section>
               <Section>
                 <Label>Bid Placed:</Label>
-                <Value>{isoDateConverter(bid_data?.created_at)}</Value>
+                <Value>{isoDateConverter(bidData?.created_at)}</Value>
               </Section>
               <Section>
                 <Label>Status:</Label>
-                <Value>{bid_data?.status}</Value>
+                <Value>{bidData?.status}</Value>
               </Section>
               <Section>
                 <Label>Company ID:</Label>
-                <Value>{bid_data?.ordering_company_id}</Value>
+                <Value>{bidData?.ordering_company_id}</Value>
               </Section>
               <Section>
                 <Label>Company Name:</Label>
-                <Value>{bid_data?.company_name}</Value>
+                <Value>{bidData?.company_name}</Value>
               </Section>
             </DetailWrapper>
 
@@ -387,38 +408,38 @@ export default function BidDetails() {
               <Section>
                 <Label>Contact Person:</Label>
                 <Value>
-                  {bid_data?.delivery_details?.store_address_json?.name}
+                  {bidData?.delivery_details?.store_address_json?.name}
                 </Value>
               </Section>
               <Section>
                 <Label>Store Name:</Label>
-                <Value>{bid_data?.delivery_details?.store_name}</Value>
+                <Value>{bidData?.delivery_details?.store_name}</Value>
               </Section>
               <Section>
                 <Label>Store Email:</Label>
-                <Value>{bid_data?.delivery_details?.store_email}</Value>
+                <Value>{bidData?.delivery_details?.store_email}</Value>
               </Section>
               <Section>
                 <Label>Store Mobile:</Label>
-                <Value>{bid_data?.delivery_details?.phone}</Value>
+                <Value>{bidData?.delivery_details?.phone}</Value>
               </Section>
             </DetailWrapper>
             <DetailWrapper>
               <Section>
                 <Label>Address:</Label>
-                <Value>{bid_data?.delivery_details?.address}</Value>
+                <Value>{bidData?.delivery_details?.address}</Value>
               </Section>
               <Section>
                 <Label>City:</Label>
-                <Value>{bid_data?.delivery_details?.city}</Value>
+                <Value>{bidData?.delivery_details?.city}</Value>
               </Section>
               <Section>
                 <Label>State:</Label>
-                <Value>{bid_data?.delivery_details?.state}</Value>
+                <Value>{bidData?.delivery_details?.state}</Value>
               </Section>
               <Section>
                 <Label>Pincode:</Label>
-                <Value>{bid_data?.delivery_details?.pincode}</Value>
+                <Value>{bidData?.delivery_details?.pincode}</Value>
               </Section>
             </DetailWrapper>
 
@@ -426,8 +447,10 @@ export default function BidDetails() {
               <>
                 <div className="divider"></div>
                 <OrderTrackingComponent
-                  tracking_list={shipmentData?.tracking_list}
-                  onRefreshClick={getOrderDetails}
+                  shipmentData={shipmentData}
+                  winnerProfileData={winnerProfileData}
+                  bidData={bidData}
+                  onRefreshClick={() => getOrderDetails(bidData)}
                 />
               </>
             )}

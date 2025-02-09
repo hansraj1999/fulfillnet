@@ -63,7 +63,7 @@ const StyledInput = styled.input`
   background: transparent;
   /* padding: ${({ size }) =>
     size === "small" ? "0px 0px 8px" : "0px 0px 8px"}; */
-  height: 32px;
+  height: 28px;
   font-size: 14px;
   font-weight: 500;
   line-height: 21px;

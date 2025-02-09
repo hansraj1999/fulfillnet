@@ -95,6 +95,7 @@ export default function BidDetails() {
   const { company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
   const [bidData, setBidData] = useState(location.state?.data);
+  const [winnerProfileData, setWinnerProfileData] = useState();
 
   const [appliedBids, setAppliedBids] = useState([]);
   const [limit, setLimit] = useState(4);
@@ -108,29 +109,45 @@ export default function BidDetails() {
 
   useEffect(() => {
     if (bidData?.new_fynd_order_id) {
-      getOrderDetails(bidData);
+      fetchOrderRelatedData(bidData);
     }
-
     if (bidData?.bid_id) {
       listAppliedBids();
     }
   }, [bidData]);
+
+  const fetchOrderRelatedData = async (data) => {
+    await getOrderDetails(data);
+    await getCompanyProfile({
+      winner_company_id: bidData?.winner_company_id,
+    });
+  };
 
   const fetchBidData = async () => {
     try {
       const result = await MainService.getBidDetails({
         bid_id: bidData?.bid_id,
       });
-      const { data } = result?.data;
-      debugger;
+      const { data } = result?.data;     
 
       setAppliedBids(data);
       if (data?.new_fynd_order_id) {
-        await getOrderDetails(data);
+        await fetchOrderRelatedData(data);
       }
       await listAppliedBids();
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const getCompanyProfile = async ({ winner_company_id }) => {
+    const result = await MainService.getProfileDetailsByCompanyID({
+      company_id: winner_company_id,
+    });
+    const { data: profileDetails, success } = result?.data;
+
+    if (success) {
+      setWinnerProfileData(profileDetails);
     }
   };
 
@@ -179,7 +196,6 @@ export default function BidDetails() {
 
       if (success) {
         const { shipments } = data;
-        // const shipment = order?.shipments[]
         setShipmentData(shipments[0]);
       }
     } catch (err) {
@@ -278,7 +294,9 @@ export default function BidDetails() {
               <>
                 <div className="divider"></div>
                 <OrderTrackingComponent
-                  tracking_list={shipmentData?.tracking_list}
+                  shipmentData={shipmentData}
+                  winnerProfileData={winnerProfileData}
+                  bidData={bidData}
                   onRefreshClick={() => getOrderDetails(bidData)}
                 />
               </>
