@@ -51,7 +51,7 @@ const ModalWrapper = styled.div`
 const ModelHeader = styled.div`
   font-size: 18px;
   font-weight: bold;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 `;
 const FormComponent = styled.form`
   display: flex;

@@ -8,7 +8,7 @@ const InputLabel = styled.p`
   font-style: normal;
   font-size: 14px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 14px;
   letter-spacing: -0.48px;
   color: #41434c;
 
@@ -22,7 +22,7 @@ const ErrorText = styled.p`
   font-style: normal;
   font-size: 12px;
   font-weight: 500;
-  line-height: 24px;
+  line-height: 16px;
   letter-spacing: -0.08px;
   padding: 0px;
   margin: 0px;
@@ -32,7 +32,7 @@ const InfoText = styled.p`
   font-style: normal;
   font-size: 12px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 12px;
   letter-spacing: -0.07px;
   padding-top: 5px;
   margin: 0;

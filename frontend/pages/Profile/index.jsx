@@ -94,6 +94,39 @@ const CrossButton = styled.img`
 `;
 const FORM_DATA = [
   {
+    name: "mobile_number",
+    label: "Mobile",
+    default: "",
+    placeholder: "Mobile",
+    type: "text",
+    disabled: true,
+    validation: {
+      required: "Please enter a mobile number",
+      pattern: {
+        value: /^[2-9]\d{9}$/gi,
+        message: "Please enter correct mobile number",
+      },
+    },
+    maxLength: 50,
+  },
+  {
+    name: "mail_id",
+    label: "Email",
+    default: "",
+    placeholder: "Email",
+    type: "text",
+    disabled: true,
+    validation: {
+      required: "Email is required",
+      pattern: {
+        value:
+          /^(('[\w-\s]+')|([\w-]+(?:\.[\w-]+)*)|('[\w-\s]+')([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i,
+        message: "Please enter valid email",
+      },
+    },
+    maxLength: 50,
+  },
+  {
     key: "beneficiary_name",
     label: "Beneficiary Name",
     name: "beneficiary_name",
@@ -239,6 +272,8 @@ export default function Profile() {
   const onSubmit = async (formData) => {
     try {
       const payload = {
+        mobile_number: formData?.mobile_number,
+        mail_id: formData?.mail_id,
         beneficiary_name: formData?.beneficiary_name,
         account_number: formData?.account_number,
         account_type: formData?.account_type,
@@ -290,7 +325,15 @@ export default function Profile() {
             </Section>
             <Section>
               <Label>Mobile Number:</Label>
-              <Value>+91 {profileDetails?.mobile_number || "-"}</Value>
+              {profileDetails?.mobile_number ? (
+                <Value>+91 {profileDetails?.mobile_number || "-"}</Value>
+              ) : (
+                <Value>-</Value>
+              )}
+            </Section>
+            <Section>
+              <Label>Mail ID:</Label>
+              <Value>{profileDetails?.mail_id || "-"}</Value>
             </Section>
           </DetailWrapper>
         </DetailsWrapper>
@@ -381,7 +424,7 @@ export default function Profile() {
                   />
                 );
               })}
-              <div style={{ marginTop: "12px" }}>
+              <div style={{ marginTop: "4px" }}>
                 <Button type="submit" width={"100%"}>
                   Submit
                 </Button>

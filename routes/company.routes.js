@@ -11,8 +11,9 @@ router.post("/register", async (req, res, next) => {
 
     const company_data = await platformClient.companyProfile.cbsOnboardGet();
 
-    const payload = { name: company_data?.name, mobile_number: "7758005274" };
-    console.log("payload >>>>>", payload);
+    const payload = {
+      name: company_data?.name,
+    };
     const { data } = await axios.post(URL, payload);
 
     return res.send({
