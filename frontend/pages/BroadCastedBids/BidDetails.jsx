@@ -469,7 +469,8 @@ export default function BidDetails() {
                         key={index}
                         onClick={handleOrderClick}
                         data={data}
-                        active={data?.is_winner}
+                        isWinner={data?.is_winner}
+                        disable_btn={bidData?.status !== "active"}
                       />
                     );
                   })}
