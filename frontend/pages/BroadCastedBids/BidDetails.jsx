@@ -309,10 +309,10 @@ export default function BidDetails() {
     }
   };
 
-  const getOrderDetails = async () => {
+  const getOrderDetails = async (DATA) => {
     try {
       const result = await MainService.getOrderByID({
-        order_id: bidData?.new_fynd_order_id,
+        order_id: DATA?.new_fynd_order_id,
         winning_company_id: company_id,
       });
       const { success, data } = result.data;
