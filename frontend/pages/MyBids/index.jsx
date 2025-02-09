@@ -20,15 +20,15 @@ const ListingContainer = styled.div``;
 
 let tabsData = [
   {
-    key: "runnig",
+    key: "active",
     label: "Running",
     // count: 0,
   },
-  // {
-  //   key: "approved",
-  //   label: "Approved",
-  //   count: 0,
-  // },
+  {
+    key: "completed",
+    label: "Completed",
+    // count: 0,
+  },
   // {
   //   key: "rejected",
   //   label: "Rejected",
@@ -48,25 +48,26 @@ export default function MyBids() {
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
 
   const [bidList, setBidList] = useState([]);
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    getAllBids();
-  }, [limit, currentPage]);
+    getAllBids({ filter: activeTab });
+  }, [limit, currentPage, activeTab]);
 
   const handleTabClick = (selectedTab) => {
     let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
     setActiveTab(newTab);
   };
 
-  const getAllBids = async () => {
+  const getAllBids = async ({ filter }) => {
     try {
       const result = await MainService.getAllBidsByCompany({
         company_id: company_id,
         pageNo: currentPage,
         pageSize: limit,
+        filter: filter,
       });
 
       const { data, item_total, pageNo } = result?.data;
@@ -127,7 +128,6 @@ export default function MyBids() {
             <NotFound text={"No Bids Available"} />
           </>
         )}
-        
         <div className="divider"></div>
         <Pagination
           total={total}

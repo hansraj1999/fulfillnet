@@ -108,9 +108,12 @@ export default function BidDetails() {
 
   useEffect(() => {
     if (bidData?.new_fynd_order_id) {
-      getOrderDetails();
+      getOrderDetails(bidData);
     }
-    listAppliedBids();
+
+    if (bidData?.bid_id) {
+      listAppliedBids();
+    }
   }, [bidData]);
 
   const fetchBidData = async () => {
@@ -122,6 +125,10 @@ export default function BidDetails() {
       debugger;
 
       setAppliedBids(data);
+      if (data?.new_fynd_order_id) {
+        await getOrderDetails(data);
+      }
+      await listAppliedBids();
     } catch (err) {
       console.log(err);
     }
@@ -143,15 +150,17 @@ export default function BidDetails() {
     }
   };
 
-  const bidApprovalHandler = async (bidData) => {
+  const bidApprovalHandler = async (appliedData) => {
     try {
-      const result = await MainService.approveBid({
-        bid_id: bidData?.bid_id,
-        winner_company_id: bidData?.company_id,
+      const payload = {
+        bid_id: appliedData?.bid_id,
+        winner_company_id: appliedData?.company_id,
         shipment_id: bidData?.shipment_id,
-      });
+      };
 
-      const data = result?.data;
+      const result = await MainService.approveBid(payload);
+
+      // const data = result?.data;
 
       await fetchBidData();
       // await getOrderDetails();
@@ -160,11 +169,11 @@ export default function BidDetails() {
     }
   };
 
-  const getOrderDetails = async () => {
+  const getOrderDetails = async (DATA) => {
     try {
       const result = await MainService.getOrderByID({
-        order_id: bidData?.new_fynd_order_id,
-        winning_company_id: company_id,
+        order_id: DATA?.new_fynd_order_id,
+        winning_company_id: DATA?.winner_company_id,
       });
       const { success, data } = result.data;
 
@@ -270,7 +279,7 @@ export default function BidDetails() {
                 <div className="divider"></div>
                 <OrderTrackingComponent
                   tracking_list={shipmentData?.tracking_list}
-                  onRefreshClick={getOrderDetails}
+                  onRefreshClick={() => getOrderDetails(bidData)}
                 />
               </>
             )}
@@ -287,8 +296,10 @@ export default function BidDetails() {
                           key={index}
                           onClick={bidApprovalHandler}
                           data={data}
-                          type="approval"
-                          active={data?.is_winner}
+                          type="approval_screen"
+                          isWinner={data?.is_winner}
+                          // disable_btn={true}
+                          disable_btn={bidData?.status !== "active"}
                         />
                       ))}
                     </BidListing>

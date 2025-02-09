@@ -266,7 +266,7 @@ export default function BidDetails() {
       const errorData = err?.response?.data || {
         message: "Internal Server Error",
       };
-      setErrorMessage(errorData);
+      setErrorMessage(errorData?.message);
     }
   };
 

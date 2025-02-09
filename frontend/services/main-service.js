@@ -37,7 +37,7 @@ const MainService = {
   },
   getBidDetails(params = {}) {
     const { bid_id } = params;
-    return axios.get(URLS.GET_ALL_BIDS_BIDS({ bid_id }));
+    return axios.get(URLS.GET_BID_DETAILS({ bid_id }));
   },
   applyBid(params = {}) {
     const { company_id, bid_id, ...rest } = params;

@@ -353,7 +353,7 @@ router.get("/global/list", async (req, res, next) => {
 });
 
 router.get("/:company_id/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = null } = req.query;
+  const { pageNo = 1, pageSize = 10, filter = null } = req.query;
   try {
     const { fdkSession, body } = req;
     const { company_id } = fdkSession;
@@ -363,7 +363,7 @@ router.get("/:company_id/list", async (req, res, next) => {
       params: {
         limit: pageSize,
         page: pageNo,
-        filter_type,
+        filter_type: filter,
       },
     });
     const { data } = result;
@@ -381,34 +381,34 @@ router.get("/:company_id/list", async (req, res, next) => {
   }
 });
 
-router.get("/:company_id/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = null } = req.query;
-  try {
-    const { fdkSession, body } = req;
-    const { company_id } = fdkSession;
+// router.get("/:company_id/list", async (req, res, next) => {
+//   const { pageNo = 1, pageSize = 10, filter = null } = req.query;
+//   try {
+//     const { fdkSession, body } = req;
+//     const { company_id } = fdkSession;
 
-    const URL = `${BASE_URL}/${company_id}/bids`;
-    const result = await axios.get(URL, {
-      params: {
-        limit: pageSize,
-        page: pageNo,
-        ...(filter_type && { filter_type: filter_type }),
-      },
-    });
-    const { data } = result;
-    console.log(result);
+//     const URL = `${BASE_URL}/${company_id}/bids`;
+//     const result = await axios.get(URL, {
+//       params: {
+//         limit: pageSize,
+//         page: pageNo,
+//         ...(filter && { filter: filter }),
+//       },
+//     });
+//     const { data } = result;
+//     console.log(result);
 
-    return res.send({
-      success: data?.success,
-      item_total: data?.total,
-      pageNo: data?.page,
-      pageSize: data?.limit,
-      data: data?.bids,
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+//     return res.send({
+//       success: data?.success,
+//       item_total: data?.total,
+//       pageNo: data?.page,
+//       pageSize: data?.limit,
+//       data: data?.bids,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 router.post("/:bid_id/apply", async (req, res, next) => {
   try {
@@ -482,18 +482,18 @@ router.post("/:company_id/ledger/:ledger_id", async (req, res, next) => {
   }
 });
 
-router.get("/:bid_is/details", async (req, res, next) => {
-  const { bid_is } = req.params;
+router.get("/:bid_id/details", async (req, res, next) => {
+  const { bid_id } = req.params;
   const { utr } = req.body;
   try {
-    const URL = `${BASE_URL}/bids/${bid_is}`;
+    const URL = `${BASE_URL}/bids/${bid_id}`;
 
     const result = await axios.get(URL);
     const { data } = result;
 
     return res.send({
       success: true,
-      message: data?.message,
+      data: data,
     });
   } catch (err) {
     next(err);

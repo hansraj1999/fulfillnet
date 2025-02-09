@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../Button";
 
-const ListComponent = styled.div`  
+const ListComponent = styled.div`
   border-radius: 4px;
   padding: 16px 24px;
   display: flex;
@@ -12,7 +12,8 @@ const ListComponent = styled.div`
   align-items: center;
   gap: 18px;
 
-  border: ${({ active }) => (active ? "1px solid rgb(126 223 144)" : "1px solid rgb(224, 224, 224)")};
+  border: ${({ active }) =>
+    active ? "1px solid rgb(126 223 144)" : "1px solid rgb(224, 224, 224)"};
   background: ${({ active }) => (active ? "#00fd6921" : "#fff")};
 
   margin: 10px 0 10px 0;
@@ -91,10 +92,11 @@ const ButtonComponent = styled(Button)`
 `;
 
 export const AppliedBidCard = (props = {}) => {
-  const { onClick, data, type = "listing", active } = props;
+  const { onClick, data, type = "listing", isWinner, disable_btn } = props;
+
   return (
     <>
-      <ListComponent className="bid-card-component" active={active}>
+      <ListComponent className="bid-card-component" active={isWinner}>
         <ListWrapper>
           <LeftWrapper>
             {/* <ImageComponent>
@@ -130,13 +132,14 @@ export const AppliedBidCard = (props = {}) => {
             </BlockComponent>
           </LeftWrapper>
           <RightWrapper>
-            {type === "approval" && (
+            {type === "approval_screen" && (
               <>
-                {data?.is_winner ? (
+                {isWinner ? (
                   <Badge type="approved">Approved</Badge>
                 ) : (
                   <ButtonWrapper>
                     <ButtonComponent
+                      disabled={disable_btn}
                       size="small"
                       mode="primary"
                       onClick={() => onClick(data)}

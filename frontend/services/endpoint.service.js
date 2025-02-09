@@ -26,7 +26,7 @@ const Endpoints = {
     return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/global/list`);
   },
   GET_BID_DETAILS({ bid_id }) {
-    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/global/list`);
+    return urlJoin(EXAMPLE_MAIN_URL, `/api/bids/${bid_id}/details`);
   },
   APPLY_BID(params) {
     const { bid_id } = params;
