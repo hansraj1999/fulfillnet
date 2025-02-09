@@ -272,7 +272,7 @@ export default function Ledgers() {
 
         <div className="divider"></div>
         <Pagination
-          total={1000}
+          total={total}
           tablePageNumber={currentPage}
           rowsPerPage={limit}
           setTablePageNumber={(num) => {

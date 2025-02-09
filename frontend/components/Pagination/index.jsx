@@ -57,9 +57,9 @@ const range = (start, stop, step) =>
 
 export default function Pagination(props = {}) {
   const {
-    total = 1000,
+    total = 0,
     tablePageNumber = 1,
-    maxPagination = 3,
+    maxPagination = 2,
     rowsPerPage = 10,
     setTablePageNumber,
   } = props;
@@ -111,7 +111,8 @@ export default function Pagination(props = {}) {
     <PaginationComponent className="dFA jcsB">
       {paginationOption?.resultCounter && (
         <PaginationResult>
-          Showing {tablePageNumber * rowsPerPage - rowsPerPage + 1} -{" "}
+          Showing{" "}
+          {total === 0 ? 0 : tablePageNumber * rowsPerPage - rowsPerPage + 1} -{" "}
           {total > tablePageNumber * rowsPerPage
             ? tablePageNumber * rowsPerPage
             : total}{" "}

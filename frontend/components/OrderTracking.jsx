@@ -150,11 +150,11 @@ export default function OrderTrackingComponent(props = {}) {
         </Section>
         <Section>
           <Label>Company Mobile:</Label>
-          <Value>{bidData?.mobile_number || "-"}</Value>
+          <Value>{winnerProfileData?.mobile_number || "-"}</Value>
         </Section>
         <Section>
           <Label>Company Email:</Label>
-          <Value>{bidData?.mail_id || "-"}</Value>
+          <Value>{winnerProfileData?.mail_id || "-"}</Value>
         </Section>
       </DetailWrapper>
       <TrackingSteps trackingList={shipmentData?.tracking_list} />

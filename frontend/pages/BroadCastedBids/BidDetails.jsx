@@ -207,7 +207,7 @@ export default function BidDetails() {
   const [winnerProfileData, setWinnerProfileData] = useState();
 
   const [appliedBids, setAppliedBids] = useState([]);
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -237,7 +237,7 @@ export default function BidDetails() {
   const fetchOrderRelatedData = async (data) => {
     await getOrderDetails(data);
     await getCompanyProfile({
-      winner_company_id: bidData?.winner_company_id,
+      winner_company_id: data?.winner_company_id,
     });
   };
 
@@ -302,8 +302,8 @@ export default function BidDetails() {
       const { applied_bids, total, page } = data;
 
       setAppliedBids(applied_bids);
-      setTotal(() => total || 0);
-      setCurrentPage(() => page || 0);
+      setTotal(() => total);
+      setCurrentPage(() => page);
     } catch (err) {
       console.log(err);
     }

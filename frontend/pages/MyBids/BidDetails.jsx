@@ -119,7 +119,7 @@ export default function BidDetails() {
   const fetchOrderRelatedData = async (data) => {
     await getOrderDetails(data);
     await getCompanyProfile({
-      winner_company_id: bidData?.winner_company_id,
+      winner_company_id: data?.winner_company_id,
     });
   };
 
@@ -128,7 +128,7 @@ export default function BidDetails() {
       const result = await MainService.getBidDetails({
         bid_id: bidData?.bid_id,
       });
-      const { data } = result?.data;     
+      const { data } = result?.data;
 
       setAppliedBids(data);
       if (data?.new_fynd_order_id) {
@@ -160,8 +160,8 @@ export default function BidDetails() {
       const { applied_bids, total, page } = data;
 
       setAppliedBids(applied_bids);
-      setTotal(() => total || 0);
-      setCurrentPage(() => page || 0);
+      setTotal(() => total);
+      setCurrentPage(() => page);
     } catch (err) {
       console.log(err);
     }
@@ -290,7 +290,7 @@ export default function BidDetails() {
               </Section>
             </DetailWrapper>
 
-            {shipmentData?.tracking_list?.length && (
+            {shipmentData?.tracking_list?.length && winnerProfileData && (
               <>
                 <div className="divider"></div>
                 <OrderTrackingComponent
