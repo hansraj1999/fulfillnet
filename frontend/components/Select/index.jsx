@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import styled, { css } from "styled-components";
 import DOWN_ARROW_ICON from "../../public/assets/down_arrow.svg";
 
@@ -289,30 +289,85 @@ const IconImage = styled.img`
   height: 25px;
 `;
 
-const sortedOptions = (data, selectedValue) => {
-  return data.sort((a, b) => {
-    const aIsSelected = selectedValue?.includes(a.key);
-    const bIsSelected = selectedValue?.includes(b.key);
-    return aIsSelected === bIsSelected ? 0 : aIsSelected ? -1 : 1;
-  });
+// 📌 Custom Hook for Dropdown Logic
+const useDropdownHandlers = (
+  register,
+  setValue,
+  selectKey,
+  setOpenSelectBox
+) => {
+  const node = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (node.current && !node.current.contains(event.target)) {
+        setOpenSelectBox(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleOptionSelection = (key, value) => {
+    register(key, { value });
+    setValue(key, value);
+    setOpenSelectBox(false);
+  };
+
+  const handleCloseButton = (event) => {
+    event.stopPropagation();
+    setOpenSelectBox(false);
+    setValue(selectKey, "");
+  };
+
+  return { node, handleOptionSelection, handleCloseButton };
 };
 
-const getSelectedValues = (data, selectedValue) => {
-  return data
-    .filter((option) => selectedValue?.includes(option.key))
-    .map((option) => option.value);
-};
+// 📌 Dropdown List Component
+const DropdownList = ({
+  options,
+  multiple,
+  selectedValue,
+  selectKey,
+  handleOptionSelection,
+  customWidth,
+}) => (
+  <SelectBox customWidth={customWidth}>
+    {options.map((option, index) => (
+      <Options
+        key={option.key + index}
+        active={
+          multiple
+            ? selectedValue?.includes(option.key)
+            : option.value === selectedValue
+        }
+        onClick={() => handleOptionSelection(selectKey, option.value)}
+      >
+        {option.value}
+      </Options>
+    ))}
+  </SelectBox>
+);
 
+// 📌 Selected Display Component
+const SelectedDisplay = ({ selectedValue, placeholder, Icon, type }) => (
+  <div className="dFA">
+    {Icon && (typeof Icon === "string" ? <IconImage src={Icon} /> : <Icon />)}
+    <SelectedOption type={type}>
+      {selectedValue || <Placeholder>{placeholder}</Placeholder>}
+    </SelectedOption>
+  </div>
+);
+
+// 📌 Main Select Component
 const Select = (props) => {
   const {
     field,
     register,
     className,
-    items,
-    onChange,
-    onRemove,
+    items = [],
     selectKey,
-    placeholder = "",
+    placeholder = "Select...",
     selectedValue = "",
     customWidth = "",
     title = "",
@@ -323,147 +378,59 @@ const Select = (props) => {
     removable = true,
     dropDownIcon = false,
     setValue,
-    search = {},
     Icon,
     reqError,
   } = props;
-  const [options, setOptions] = useState(
-    multiple ? [...sortedOptions(items, selectedValue)] : [...items]
-  );
 
-  let currentValue =
-    selectedValue !== ""
-      ? multiple
-        ? getSelectedValues(items, selectedValue)?.join(", ")
-        : selectedValue
-      : "";
-
-  let placeholderValue =
-    placeholder !== "" ? placeholder : title !== "" ? title : "";
   const [openSelectBox, setOpenSelectBox] = useState(false);
-  const node = useRef(null);
+  const { node, handleOptionSelection, handleCloseButton } =
+    useDropdownHandlers(register, setValue, selectKey, setOpenSelectBox);
 
-  const handleOptionSelection = async (key, value) => {
-    register(key, { value });
-    setValue(key, value);
-
-    setOpenSelectBox(false);
-  };
-
-  const handleCloseButton = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    setOpenSelectBox(false);
-    setValue(selectKey, null);
-  };
-
-  useEffect(() => {
-    if (register) {
-      register(selectKey, field?.validation);
-    }
-  }, [openSelectBox]);
-
-  useEffect(() => {
-    if (items && options !== items) {
-      setOptions([...items]);
-    }
-  }, [items]);
+  const sortedOptions = useMemo(() => {
+    return multiple
+      ? [...items].sort((a, b) => (selectedValue?.includes(a.key) ? -1 : 1))
+      : [...items];
+  }, [items, selectedValue]);
 
   return (
     <ContainedWrapper
-      data-testid="select-component"
+      ref={node}
       className={`${className} pR dF fdC`}
       margin={margin}
-      ref={node}
     >
       <SelectWrapper
-        className="cP"
         onClick={() => setOpenSelectBox(!openSelectBox)}
         width={width}
         type={type}
       >
         {title && type !== "borderless" && <SelectTitle>{title}</SelectTitle>}
-        <SelectInnerWrapper className="dF jcsB">
-          {currentValue !== "" ? (
-            <div className="dFA">
-              {Icon && (
-                <>
-                  {typeof Icon === "string" ? (
-                    <IconImage src={Icon} />
-                  ) : (
-                    <Icon />
-                  )}
-                </>
-              )}
-              <SelectedOption
-                margin={Icon ? "0 0 0 10px" : "0"}
-                className="select-value"
-                type={type}
-              >
-                {currentValue}
-              </SelectedOption>
-            </div>
-          ) : (
-            <div className="dFA">
-              {Icon && (
-                <>
-                  {typeof Icon === "string" ? (
-                    <IconImage src={Icon} />
-                  ) : (
-                    <Icon />
-                  )}
-                </>
-              )}
-              <Placeholder margin={Icon ? "0 0 0 10px" : "0"} type={type}>
-                {placeholderValue}
-              </Placeholder>
-            </div>
+        <SelectInnerWrapper>
+          <SelectedDisplay
+            selectedValue={selectedValue}
+            placeholder={placeholder}
+            Icon={Icon}
+            type={type}
+          />
+          {removable && selectedValue && (
+            <span onClick={handleCloseButton}>x</span>
           )}
-          {removable && selectedValue !== "" && (
-            <span onClick={(e) => handleCloseButton(e)}>x</span>
-          )}
-          {dropDownIcon && (
-            <DropdownIcon
-              src={DOWN_ARROW_ICON}
-              alt="dropdown-icon"
-              width={24}
-              height={24}
-              type={type}
-            />
-          )}
+          {dropDownIcon && <DropdownIcon src={DOWN_ARROW_ICON} />}
         </SelectInnerWrapper>
       </SelectWrapper>
-      {reqError && reqError[selectKey] !== "undefined" && (
+
+      {reqError?.[selectKey] && (
         <ErrorMessage>{reqError[selectKey]}</ErrorMessage>
       )}
+
       {openSelectBox && (
-        <SelectBox className="oH pA select-options" customWidth={customWidth}>
-          {options?.length > 0 &&
-            options.map((option, index) => {
-              return (
-                <Options
-                  width={width}
-                  customWidth={customWidth}
-                  className="cP"
-                  key={option.key + index}
-                  active={
-                    multiple
-                      ? selectedValue?.includes(option.key)
-                      : option.value === currentValue
-                  }
-                  onClick={() =>
-                    handleOptionSelection(
-                      selectKey,
-                      field?.fullValue ? option : option.value
-                    )
-                  }
-                >
-                  {option.value}
-                </Options>
-              );
-            })}
-        </SelectBox>
+        <DropdownList
+          options={sortedOptions}
+          multiple={multiple}
+          selectedValue={selectedValue}
+          selectKey={selectKey}
+          handleOptionSelection={handleOptionSelection}
+          customWidth={customWidth}
+        />
       )}
     </ContainedWrapper>
   );
