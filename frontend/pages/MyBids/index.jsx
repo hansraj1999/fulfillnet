@@ -103,16 +103,16 @@ export default function MyBids() {
           },
         ]}
       />
-      {bidList?.length > 0 ? (
-        <Wrapper>
-          <TabsContainer>
-            <Tabs
-              selectedTab={activeTab}
-              tabList={tabsData}
-              onClick={handleTabClick}
-            />
-          </TabsContainer>
 
+      <Wrapper>
+        <TabsContainer>
+          <Tabs
+            selectedTab={activeTab}
+            tabList={tabsData}
+            onClick={handleTabClick}
+          />
+        </TabsContainer>
+        {bidList?.length > 0 ? (
           <ListingContainer>
             {bidList.map((data, index) => (
               <BidCardComponent
@@ -121,22 +121,23 @@ export default function MyBids() {
                 data={data}
               />
             ))}
-            <div className="divider"></div>
-            <Pagination
-              total={total}
-              tablePageNumber={currentPage}
-              rowsPerPage={limit}
-              setTablePageNumber={(num) => {
-                setCurrentPage(num);
-              }}
-            />
           </ListingContainer>
-        </Wrapper>
-      ) : (
-        <>
-          <NotFound text={"No Bids Available"} />
-        </>
-      )}
+        ) : (
+          <>
+            <NotFound text={"No Bids Available"} />
+          </>
+        )}
+        
+        <div className="divider"></div>
+        <Pagination
+          total={total}
+          tablePageNumber={currentPage}
+          rowsPerPage={limit}
+          setTablePageNumber={(num) => {
+            setCurrentPage(num);
+          }}
+        />
+      </Wrapper>
     </>
   );
 }

@@ -264,20 +264,21 @@ export default function Ledgers() {
                   company_id={company_id}
                 />
               ))}
-              <div className="divider"></div>
-              <Pagination
-                total={total}
-                tablePageNumber={currentPage}
-                rowsPerPage={limit}
-                setTablePageNumber={(num) => {
-                  setCurrentPage(num);
-                }}
-              />
             </ListingContainer>
           </>
         ) : (
           <NotFound text={"No Transaction Found"} />
         )}
+
+        <div className="divider"></div>
+        <Pagination
+          total={1000}
+          tablePageNumber={currentPage}
+          rowsPerPage={limit}
+          setTablePageNumber={(num) => {
+            setCurrentPage(num);
+          }}
+        />
       </Wrapper>
 
       {isModalOpen && (
