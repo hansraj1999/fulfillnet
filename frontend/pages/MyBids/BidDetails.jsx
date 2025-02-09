@@ -13,6 +13,7 @@ import MainService from "../../services/main-service";
 import OrderTrackingComponent from "../../components/OrderTracking";
 import NotFound from "../NotFound";
 import { isoDateConverter } from "../../Utilities/date.util";
+import Pagination from "../../components/Pagination";
 
 const DetailsComponent = styled.div`
   background-color: white;
@@ -56,7 +57,12 @@ const Value = styled.p`
 `;
 
 const BidListing = styled.div``;
-const ListingWrapper = styled.div``;
+const ListingWrapper = styled.div`
+  .pagination-divider {
+    border-bottom: 1px solid #e0e0e0;
+    /* margin: 24px 0; */
+  }
+`;
 
 const TabsContainer = styled.div``;
 
@@ -86,10 +92,14 @@ const trackingList = [
 export default function BidDetails() {
   const location = useLocation();
   const [shipmentData, setShipmentData] = useState(null);
-  const [appliedBids, setAppliedBids] = useState([]);
   const { company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
   const [bidData, setBidData] = useState(location.state?.data);
+
+  const [appliedBids, setAppliedBids] = useState([]);
+  const [limit, setLimit] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   // const handleTabClick = (selectedTab) => {
   //   let newTab = tabsData.find((eachTab) => eachTab.key === selectedTab)?.key;
@@ -123,8 +133,11 @@ export default function BidDetails() {
         bid_id: bidData?.bid_id,
       });
       const { data } = result?.data;
+      const { applied_bids, total, page } = data;
 
-      setAppliedBids(data);
+      setAppliedBids(applied_bids);
+      setTotal(() => total || 0);
+      setCurrentPage(() => page || 0);
     } catch (err) {
       console.log(err);
     }
@@ -286,6 +299,16 @@ export default function BidDetails() {
                   <NotFound text={"No Bids Available"} />
                 </>
               )}
+
+              <div className="pagination-divider"></div>
+              <Pagination
+                total={total}
+                tablePageNumber={currentPage}
+                rowsPerPage={limit}
+                setTablePageNumber={(num) => {
+                  setCurrentPage(num);
+                }}
+              />
             </ListingWrapper>
           </DetailsComponent>
         </>
