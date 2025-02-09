@@ -323,7 +323,7 @@ router.post("/:bid_id/approve", async (req, res, next) => {
 
 // bid list for other channels
 router.get("/global/list", async (req, res, next) => {
-  const { pageNo = 1, pageSize = 10, filter_type = "active" } = req.query;
+  const { pageNo = 1, pageSize = 10, filter = "active" } = req.query;
   try {
     const { fdkSession, body } = req;
     const { company_id } = fdkSession;
@@ -333,7 +333,7 @@ router.get("/global/list", async (req, res, next) => {
       params: {
         limit: pageSize,
         page: pageNo,
-        ...(filter_type && { filter_type: filter_type }),
+        ...(filter && { filter: filter }),
         exclude_company_id: company_id,
       },
     });
@@ -412,12 +412,22 @@ router.get("/:company_id/list", async (req, res, next) => {
 
 router.post("/:bid_id/apply", async (req, res, next) => {
   try {
-    const { fdkSession, body, params } = req;
+    const { platformClient, fdkSession, body, params } = req;
     const { bid_id } = params;
     const { company_id } = fdkSession;
+    const { item_id, item_size, ...restBody } = body;
+
+    const inventory_details = await platformClient.catalog.getInventories({
+      itemId: String(item_id),
+      size: item_size,
+    });
+    const item_details = inventory_details?.items[0];
+    if (!item_details) {
+      throw new Error("You cannot apply for this bid, no inventory found");
+    }
 
     const URL = `${BASE_URL}/${company_id}/bid/${bid_id}`;
-    const result = await axios.post(URL, body);
+    const result = await axios.post(URL, restBody);
     const { data } = result;
     console.log(result);
 
@@ -437,7 +447,12 @@ router.get("/:bid_id/applied/list", async (req, res, next) => {
     const { bid_id } = params;
 
     const URL = `${BASE_URL}/bids/${bid_id}/applied_bids`;
-    const result = await axios.get(URL);
+    const result = await axios.get(URL, {
+      params: {
+        limit: pageSize,
+        page: pageNo,
+      },
+    });
     const { data } = result;
 
     return res.send({

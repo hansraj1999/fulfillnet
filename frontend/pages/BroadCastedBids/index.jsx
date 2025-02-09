@@ -20,25 +20,24 @@ const ListingContainer = styled.div``;
 
 let tabsData = [
   {
-    key: "runnig",
+    key: "active",
     label: "Running",
     // count: 0,
   },
   {
-    //   key: "approved",
-    //   label: "Approved",
-    //   count: 0,
-    // },
-    // {
-    //   key: "rejected",
-    //   label: "Rejected",
-    //   count: 0,
-    // },
-    // {
-    //   key: "cancelled",
-    //   label: "Cancelled",
-    //   count: 0,
+    key: "completed",
+    label: "Completed",
+    // count: 0,
   },
+  // {
+  //   key: "delivered",
+  //   label: "Delivered",
+  //   count: 0,
+  // },
+  // {
+  //   key: "cancelled",
+  //   label: "Cancelled",
+  //   count: 0,
 ];
 
 export default function BroadCastedBids() {
@@ -53,15 +52,16 @@ export default function BroadCastedBids() {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    getAllBids();
-  }, [limit, currentPage]);
+    getAllBids({ filter: activeTab });
+  }, [limit, currentPage, activeTab]);
 
-  const getAllBids = async () => {
+  const getAllBids = async ({ filter }) => {
     try {
       const result = await MainService.getAllGlobalBids({
         company_id: company_id,
         pageNo: currentPage,
         pageSize: limit,
+        filter: filter,
       });
 
       const { data, item_total, pageNo } = result?.data;
@@ -133,7 +133,7 @@ export default function BroadCastedBids() {
 
         <div className="divider"></div>
         <Pagination
-          total={1000}
+          total={total}
           tablePageNumber={currentPage}
           rowsPerPage={limit}
           setTablePageNumber={(num) => {

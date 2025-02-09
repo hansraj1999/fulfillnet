@@ -16,6 +16,7 @@ import OrderTrackingComponent from "../../components/OrderTracking";
 import NotFound from "../NotFound";
 import { isoDateConverter } from "../../Utilities/date.util";
 import CrossIcon from "../../public/assets/Cross.svg";
+import Pagination from "../../components/Pagination";
 
 const BreadCrumbWrapper = styled.div`
   display: flex;
@@ -66,7 +67,12 @@ const Value = styled.p`
 `;
 
 const BidListing = styled.div``;
-const ListingWrapper = styled.div``;
+const ListingWrapper = styled.div`
+  .pagination-divider {
+    border-bottom: 1px solid #e0e0e0;
+    /* margin: 24px 0; */
+  }
+`;
 
 const TabsContainer = styled.div``;
 const ButtonComponent = styled(Button)`
@@ -194,11 +200,15 @@ export default function BidDetails() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [shipmentData, setShipmentData] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [appliedBids, setAppliedBids] = useState([]);
   const location = useLocation();
   const { application_id, company_id } = useParams();
   const [activeTab, setActiveTab] = useState(tabsData[0].key);
   const bid_data = location.state?.data;
+
+  const [appliedBids, setAppliedBids] = useState([]);
+  const [limit, setLimit] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   const {
     register,
@@ -234,6 +244,8 @@ export default function BidDetails() {
   const onBidSubmit = async (formData) => {
     try {
       const payload = {
+        item_id: bid_data?.item_details.id,
+        item_size: bid_data?.item_details.size,
         company_id,
         bid_id: bid_data?.bid_id,
         amount: formData?.amount,
@@ -241,6 +253,7 @@ export default function BidDetails() {
       };
       const result = await MainService.applyBid(payload);
       const data = result.data;
+
       if (data.success) {
         await listAppliedBids();
         setModalOpen(false);
@@ -250,6 +263,10 @@ export default function BidDetails() {
       }
     } catch (err) {
       console.log(err);
+      const errorData = err?.response?.data || {
+        message: "Internal Server Error",
+      };
+      setErrorMessage(errorData);
     }
   };
 
@@ -257,10 +274,15 @@ export default function BidDetails() {
     try {
       const result = await MainService.getAllAppliedBids({
         bid_id: bid_data?.bid_id,
+        pageNo: currentPage,
+        pageSize: limit,
       });
       const { data } = result?.data;
+      const { applied_bids, total, page } = data;
 
-      setAppliedBids(data);
+      setAppliedBids(applied_bids);
+      setTotal(() => total || 0);
+      setCurrentPage(() => page || 0);
     } catch (err) {
       console.log(err);
     }
@@ -356,8 +378,6 @@ export default function BidDetails() {
                 <Label>Company Name:</Label>
                 <Value>{bid_data?.company_name}</Value>
               </Section>
-
-              
             </DetailWrapper>
 
             <div className="divider"></div>
@@ -434,6 +454,16 @@ export default function BidDetails() {
               ) : (
                 <NotFound text={"No Bid Available"} />
               )}
+
+              <div className="pagination-divider"></div>
+              <Pagination
+                total={total}
+                tablePageNumber={currentPage}
+                rowsPerPage={limit}
+                setTablePageNumber={(num) => {
+                  setCurrentPage(num);
+                }}
+              />
             </ListingWrapper>
           </DetailsComponent>
         </>

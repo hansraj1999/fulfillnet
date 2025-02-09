@@ -44,8 +44,10 @@ const MainService = {
     return axios.post(URLS.APPLY_BID({ company_id, bid_id }), { ...rest });
   },
   getAllAppliedBids(params = {}) {
-    const { bid_id } = params;
-    return axios.get(URLS.GET_ALL_APPLIED_BIDS({ bid_id }));
+    const { bid_id, pageNo, pageSize } = params;
+    return axios.get(URLS.GET_ALL_APPLIED_BIDS({ bid_id }), {
+      params: { pageNo, pageSize },
+    });
   },
   approveBid(params = {}) {
     const { bid_id, winner_company_id, shipment_id } = params;
