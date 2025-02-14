@@ -99,7 +99,7 @@ const Footer = () => {
             <ListItem
               onClick={() =>
                 window.open(
-                  "https://example.com",
+                  "https://cdn.pixelbin.io/v2/spring-firefly-045e8d/original/FulFilNet/fulfilnet-walkthrough",
                   "_blank",
                   "noopener,noreferrer"
                 )
